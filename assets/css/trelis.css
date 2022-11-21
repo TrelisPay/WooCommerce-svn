@@ -1,0 +1,4 @@
+label[for="payment_method_trelis"] > img {
+  float: right;
+  max-width: 40px;
+}
