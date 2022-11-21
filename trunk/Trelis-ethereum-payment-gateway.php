@@ -20,8 +20,6 @@
  */
 
 
-
-
 add_filter( 'woocommerce_currencies', 'trelis_add_crypto' );
 
 function trelis_add_crypto( $currencies ) {
@@ -186,7 +184,7 @@ if (in_array('woocommerce/woocommerce.php', apply_filters('active_plugins', get_
                 );
             }
 
-            public function trelis_process_payment($order_id)
+            public function process_payment($order_id)
             {
                 global $woocommerce;
                 $order = wc_get_order($order_id);
