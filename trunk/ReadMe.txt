@@ -72,6 +72,16 @@ Customers pay for Ethereum transaction fees (gas). Trelis does not charge a tran
 
 = Unreleased =
 * Allow payment in USDC for products priced in non-USD currencies.
+* Add support for Spanish
+* Allow merchants to offer gasless payments
+* Add option for Trelis prime (1% customer discount)
+
+
+= 1.0.17 = 
+* Add support for Spanish (unstable)
+
+= 1.0.16 =
+* First version live (stable release)
 
 = 1.0.14 =
 * Version submitted for WooCommerce review.

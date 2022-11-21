@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Trelis Crypto Payments\n"
-"POT-Creation-Date: 2022-11-21 11:34+0000\n"
-"PO-Revision-Date: 2022-11-21 11:34+0000\n"
+"POT-Creation-Date: 2022-11-21 11:14+0000\n"
+"PO-Revision-Date: 2022-11-21 11:17+0000\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: es_ES\n"
@@ -23,73 +23,86 @@ msgstr ""
 
 #: Trelis-ethereum-payment-gateway.php:28
 msgid "ETH"
-msgstr ""
+msgstr "ETH"
 
 #: Trelis-ethereum-payment-gateway.php:29
 msgid "USDC"
-msgstr ""
+msgstr "USDC"
 
 #: Trelis-ethereum-payment-gateway.php:71
 #: Trelis-ethereum-payment-gateway.php:84
 #: Trelis-ethereum-payment-gateway.php:96
 msgid "Failed"
-msgstr ""
+msgstr "Fallido"
+
+#: Trelis-ethereum-payment-gateway.php:89
+msgid "processing"
+msgstr "en proceso"
 
 #: Trelis-ethereum-payment-gateway.php:90
 msgid "Already processed"
-msgstr ""
+msgstr "Ya procesada"
 
 #: Trelis-ethereum-payment-gateway.php:94
+#, fuzzy
 msgid "Expected amount "
-msgstr ""
+msgstr "Importe previsto"
 
 #: Trelis-ethereum-payment-gateway.php:94
+#, fuzzy
 msgid ", received "
-msgstr ""
+msgstr ", recibido"
 
 #: Trelis-ethereum-payment-gateway.php:99
+#, fuzzy
 msgid "Payment complete!"
-msgstr ""
+msgstr "Pago completo"
 
 #: Trelis-ethereum-payment-gateway.php:102
+#, fuzzy
 msgid "Processed!"
-msgstr ""
+msgstr "¡Procesado!"
 
 #. Plugin Name of the plugin/theme
 #: Trelis-ethereum-payment-gateway.php:146
+#, fuzzy
 msgid "Trelis Crypto Payments"
-msgstr ""
+msgstr "Criptopagos Trelis"
 
 #: Trelis-ethereum-payment-gateway.php:162
 msgid "Enable/Disable"
-msgstr ""
+msgstr "Activar/Desactivar"
 
 #: Trelis-ethereum-payment-gateway.php:163
+#, fuzzy
 msgid "Enable Trelis Pay"
-msgstr ""
+msgstr "Activar Trelis Pay"
 
 #: Trelis-ethereum-payment-gateway.php:198
+#, fuzzy
 msgid "Trelis does not support that currency"
-msgstr ""
+msgstr "Trelis no admite esa moneda"
 
 #: Trelis-ethereum-payment-gateway.php:242
 msgid "Connection error"
-msgstr ""
+msgstr "Error de conexión"
 
 #. Plugin URI of the plugin/theme
 msgid "https://docs.trelis.com/products/woocommerce-plugin"
-msgstr ""
+msgstr "https://docs.trelis.com/products/woocommerce-plugin"
 
 #. Description of the plugin/theme
 msgid ""
 "Accept USDC or Ether payments directly to your wallet. Your customers pay by "
 "connecting any Ethereum wallet. No Trelis fees!"
 msgstr ""
+"Acepta pagos en USDC o Ether directamente en tu monedero. Tus clientes pagan "
+"conectando cualquier monedero de Ethereum. ¡Sin comisiones de Trelis!"
 
 #. Author of the plugin/theme
 msgid "Trelis"
-msgstr ""
+msgstr "Trelis"
 
 #. Author URI of the plugin/theme
 msgid "https://www.Trelis.com"
-msgstr ""
+msgstr "https://www.Trelis.com"

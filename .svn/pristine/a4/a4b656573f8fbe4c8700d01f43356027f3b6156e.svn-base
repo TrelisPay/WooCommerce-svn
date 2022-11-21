@@ -86,7 +86,7 @@ function trelis_payment_confirmation_callback()
     $order_id = $orders[0]->ID;
     $order = wc_get_order($order_id);
 
-    if ($order->get_status() == 'processing' || $order->get_status() == 'complete')
+    if ($order->get_status() == __('processing','trelis-crypto-payments') || $order->get_status() == 'complete')
         return __('Already processed','trelis-crypto-payments');
 
     if ($data->isSuccessful === false) {
