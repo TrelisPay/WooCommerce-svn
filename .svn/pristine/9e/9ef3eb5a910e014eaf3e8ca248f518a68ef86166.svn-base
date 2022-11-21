@@ -76,12 +76,6 @@ Customers pay for Ethereum transaction fees (gas). Trelis does not charge a tran
 * Allow merchants to offer gasless payments
 * Add option for Trelis prime (1% customer discount)
 
-<<<<<<< .mine
-= 1.0.16 =
-* Version approved and set live.
-
-||||||| .r2820447
-=======
 
 = 1.0.17 = 
 * Add support for Spanish (unstable)
@@ -89,7 +83,6 @@ Customers pay for Ethereum transaction fees (gas). Trelis does not charge a tran
 = 1.0.16 =
 * First version live (stable release)
 
->>>>>>> .r2821517
 = 1.0.14 =
 * Version submitted for WooCommerce review.
 
