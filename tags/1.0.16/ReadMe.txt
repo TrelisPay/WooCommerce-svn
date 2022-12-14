@@ -1,6 +1,6 @@
 === Trelis Crypto Payments ===
 Contributors: ronantrelis
-Donate link: https://art.trelis.com/product/woocommerce-plugin-donation/
+Donate link: https://shop.trelis.com/product/woocommerce-plugin-donation/
 Tags: crypto, payment, ethereum, USDC, ether, eth, cryptocurrency, non-custodial, payments, payment gateway, metamask
 Requires at least: 6.1
 Tested up to: 6.1
