@@ -4,7 +4,7 @@ Donate link: https://shop.trelis.com/product/woocommerce-plugin-donation/
 Tags: crypto, payment, ethereum, USDC, ether, eth, cryptocurrency, non-custodial, payments, payment gateway, metamask
 Requires at least: 6.1
 Tested up to: 6.1
-Stable tag: 1.0.16
+Stable tag: 1.0.17
 Requires PHP: 7.4
 License: GPL-3.0
 License URI: http://www.gnu.org/licenses/gpl-3.0.txt
@@ -28,12 +28,13 @@ Accept USDC or ETH directly to your wallet. Allow customers to pay by connecting
 = What are the benefits for my customers? =
 
 * **Pay with any major Ethereum wallet.** Metamask, Coinbase, Rainbow, Ledger, Trezor
+* **Gasless payments** Customers can pay in USDC, no ETH required!
 
 == Getting Started == 
 
 1. Install the Trelis Crypto Payments plugin
 1. Navigate to WooCommerce -> Settings -> Payments -> TrelisPay -> Manage
-1. Navigate to [Trelis.com](Trelis.com) and connect your Ethereum wallet. This wallet will receive payments. It is highly recommended to use a cold wallet. You are solely responsible for custody of your funds.
+1. Navigate to [Trelis.com](Trelis.com) and connect your Ethereum wallet. This wallet will receive payments. It is highly recommended to use a cold wallet. You are solely responsible for custody of your funds. To offer gasless USDC payments, purchase gas credits from your dashboard.
 1. Navigate to the api screen to create a new api key.
 1. Copy the api webhook url from Wordpress and enter it on Trelis.com
 1. Copy the apiKey, apiSecret and webhook secret from Trelis.com and enter them into Wordpress.
@@ -60,6 +61,10 @@ Customers pay for Ethereum transaction fees (gas). Trelis does not charge a tran
 
 * Users of Trelis Crypto Payments plugin with Trelis' api must agree to Trelis' [Terms of Service](https://docs.trelis.com/terms-of-service) as a condition of use.
 
+= Why aren't payments showing as gasless? =
+
+* Merchants can only offer gasless payments to customers if they have prepaid gas credits. Gas credits can be purchased at Trelis.com and must be purchased from the same account from which the api keys are generated. Further, payments will default to standard (i.e. customer pays for gas) if gas costs exceed 5% of the transaction amount.
+
 == Screenshots ==
 
 1. Payment gateways (see Trelis at the bottom)
@@ -73,8 +78,10 @@ Customers pay for Ethereum transaction fees (gas). Trelis does not charge a tran
 = Unreleased =
 * Allow payment in USDC for products priced in non-USD currencies.
 * Add support for Spanish
-* Allow merchants to offer gasless payments
 * Add option for Trelis prime (1% customer discount)
+
+= 1.0.17 =
+* Allow merchants to offer gasless payments
 
 = 1.0.16 =
 * First version live (stable release)
