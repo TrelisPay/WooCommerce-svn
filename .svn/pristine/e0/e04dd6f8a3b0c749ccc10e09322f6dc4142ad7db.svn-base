@@ -210,8 +210,7 @@ if (in_array('woocommerce/woocommerce.php', apply_filters('active_plugins', get_
                         'productName' => get_bloginfo( 'name' ),
                         'productPrice' => $order->total,
                         'currencyType' => $currency,
-                        'redirectLink' => $this->get_return_url($order),
-			'isGasless' => true
+                        'redirectLink' => $this->get_return_url($order)
                     ))
                 );
 
