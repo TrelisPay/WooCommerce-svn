@@ -209,7 +209,7 @@ if (in_array('woocommerce/woocommerce.php', apply_filters('active_plugins', get_
                     'body' => json_encode(array(
                         'productName' => get_bloginfo( 'name' ),
                         'productPrice' => $order->total,
-                        'currencyType' => $currency,
+                        'token' => $currency,
                         'redirectLink' => $this->get_return_url($order),
 			'isGasless' => true
                     ))
