@@ -41,15 +41,13 @@ function trelis_add_currency_symbols( $currency_symbol, $currency ) {
 function trelis_get_currency() {
     global  $woocommerce;
     $currency = get_woocommerce_currency();
+    $token = currency;
 
-    switch ($currency) {
-        case 'USD':
-            return "USDC";
-        case 'USDC':
+    switch ($token) {
         case 'ETH':
             return $currency;
         default:
-            return null;
+            return "USDC";
     }
 }
 
@@ -209,9 +207,10 @@ if (in_array('woocommerce/woocommerce.php', apply_filters('active_plugins', get_
                     'body' => json_encode(array(
                         'productName' => get_bloginfo( 'name' ),
                         'productPrice' => $order->total,
-                        'token' => $currency,
+                        'token' => $token,
                         'redirectLink' => $this->get_return_url($order),
-			'isGasless' => true
+			'isGasless' => true,
+			'fiatCurrency' => $currency
                     ))
                 );
 
