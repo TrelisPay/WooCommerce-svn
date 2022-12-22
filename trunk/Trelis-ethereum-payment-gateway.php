@@ -155,11 +155,17 @@ if (in_array('woocommerce/woocommerce.php', apply_filters('active_plugins', get_
 
                 $this->trelis_init_form_fields();
                 $this->init_settings();
-                $this->title = __('Trelis Crypto Payments','trelis-crypto-payments');
+                
                 $this->enabled = $this->get_option('enabled');
                 $this->api_key = $this->get_option('api_key');
                 $this->api_secret = $this->get_option('api_secret');
                 add_action('woocommerce_update_options_payment_gateways_' . $this->id, array($this, 'process_admin_options'));
+
+		if($this->get_option('prime') === "yes"){
+			$this->title = __('Trelis Prime - 1% discount','trelis-crypto-payments');
+		} else {
+			$this->title = __('Trelis Crypto Payments','trelis-crypto-payments');
+		}
 
                 if (is_checkout()) {
                     wp_register_style("trelis", plugins_url('/assets/css/trelis.css', __FILE__), '', '1.0.0');
@@ -222,7 +228,7 @@ if (in_array('woocommerce/woocommerce.php', apply_filters('active_plugins', get_
                 $isPrime = $this->get_option('prime') === "yes";
                 $isGasless = $this->get_option('gasless') === "yes";
 
-                $apiUrl = 'https://api.trelis.com/stage-env/dev-api/create-dynamic-link?apiKey=' . $apiKey . "&apiSecret=" . $apiSecret;
+                $apiUrl = 'https://api.trelis.com/dev-api/create-dynamic-link?apiKey=' . $apiKey . "&apiSecret=" . $apiSecret;
 
                 $args = array(
                     'headers' => array(
