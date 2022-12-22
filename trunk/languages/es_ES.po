@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Trelis Crypto Payments\n"
-"POT-Creation-Date: 2022-12-22 13:52+0000\n"
-"PO-Revision-Date: 2022-12-22 14:11+0000\n"
+"POT-Creation-Date: 2022-12-22 17:09+0000\n"
+"PO-Revision-Date: 2022-12-22 17:11+0000\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: es_ES\n"
@@ -88,6 +88,11 @@ msgstr "Trelis Prime"
 msgid "Offer a 1% discount for using Trelis Pay"
 msgstr "Ofrecer un 1% discount por utilizar Trelis Pay"
 
+#: Trelis-ethereum-payment-gateway.php:190
+#, fuzzy
+msgid "Learn how to minimise payment processing charges"
+msgstr "Aprenda a minimizar los gastos de procesamiento de pagos"
+
 #: Trelis-ethereum-payment-gateway.php:194
 #, fuzzy
 msgid "Gasless Payments"
@@ -97,6 +102,11 @@ msgstr "Pagos sin gas"
 #, fuzzy
 msgid "Cover gas costs for customer payments"
 msgstr "Cubrir los gastos de gas de los pagos de los clientes"
+
+#: Trelis-ethereum-payment-gateway.php:197
+#, fuzzy
+msgid "Buy gas credits OR learn more about gasless payments"
+msgstr "Comprar créditos de gas O saber más sobre los pagos sin gas"
 
 #: Trelis-ethereum-payment-gateway.php:271
 msgid "Connection error"
