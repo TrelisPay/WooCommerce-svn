@@ -1,14 +1,14 @@
 <?php
 /**
  * @link              https://www.Trelis.com
- * @since             1.0.17
+ * @since             1.0.18
  * @package           Trelis_Crypto_Payments
  *
  * @wordpress-plugin
  * Plugin Name:       Trelis Crypto Payments
  * Plugin URI:        https://docs.trelis.com/products/woocommerce-plugin
  * Description:       Accept USDC or Ether payments directly to your wallet. Your customers pay by connecting any Ethereum wallet. No Trelis fees!
- * Version:           1.0.17
+ * Version:           1.0.18
  * Requires at least: 6.1
  * Requires PHP:      7.4
  * Author:            Trelis
@@ -41,13 +41,26 @@ function trelis_add_currency_symbols( $currency_symbol, $currency ) {
 function trelis_get_currency() {
     global  $woocommerce;
     $currency = get_woocommerce_currency();
-    $token = currency;
 
-    switch ($token) {
+    switch ($currency) {
         case 'ETH':
+        case 'USDC':
+            return null;
+        default:
+            return $currency;
+    }
+}
+
+function trelis_get_token() {
+    global  $woocommerce;
+    $currency = get_woocommerce_currency();
+
+    switch ($currency) {
+        case 'ETH':
+        case 'USDC':
             return $currency;
         default:
-            return "USDC";
+            return 'USDC';
     }
 }
 
@@ -85,11 +98,14 @@ function trelis_payment_confirmation_callback()
     if ($order->get_status() == 'processing' || $order->get_status() == 'complete')
         return __('Already processed','trelis-crypto-payments');
 
-    if ($data->isSuccessful === false) {
-        $order->add_order_note('Trelis payment failed!<br>Body: '.$json);
-        $order->add_order_note(__('Expected amount ','trelis-crypto-payments') . $data->requiredPaymentAmount . __(', received ','trelis-crypto-payments') . $data->paidAmount, true);
+    if ($data->event === "submission.failed" || $data->event === "charge.failed") {
+        $order->add_order_note(__('Trelis Payment Failed! Expected amount ','trelis-crypto-payments') . $data->requiredPaymentAmount . __(', received ','trelis-crypto-payments') . $data->paidAmount, true);
         $order->save();
         return __('Failed','trelis-crypto-payments');
+    }
+
+    if ($data->event !== "charge.success") {
+        return __('Pending','trelis-crypto-payments');
     }
 
     $order->add_order_note(__('Payment complete!','trelis-crypto-payments'), true);
@@ -161,6 +177,20 @@ if (in_array('woocommerce/woocommerce.php', apply_filters('active_plugins', get_
                         'description' => '',
                         'default' => 'yes'
                     ),
+                    'prime' => array(
+                        'title' => __('Trelis Prime','trelis-crypto-payments'),
+                        'label' => __('Enable','trelis-crypto-payments'),
+                        'type' => 'checkbox',
+                        'description' => '<a href="https://docs.trelis.com">Learn More</a>',
+                        'default' => ''
+                    ),
+                    'gasless' => array(
+                        'title' => __('Gasless Paiments','trelis-crypto-payments'),
+                        'label' => __('Enable','trelis-crypto-payments'),
+                        'type' => 'checkbox',
+                        'description' => '<a href="https://docs.trelis.com">Learn More</a>',
+                        'default' => ''
+                    ),
                     'api_url' => array(
                         'title' => 'API Webhook URL',
                         'type' => 'text',
@@ -187,18 +217,12 @@ if (in_array('woocommerce/woocommerce.php', apply_filters('active_plugins', get_
                 global $woocommerce;
                 $order = wc_get_order($order_id);
 
-
-                $currency = trelis_get_currency();
-
-                if (!$currency) {
-                    wc_add_notice(__('Trelis does not support that currency','trelis-crypto-payments'), 'error');
-                    return;
-                }
-
-
                 $apiKey = $this->get_option('api_key');
                 $apiSecret = $this->get_option('api_secret');
-                $apiUrl = 'https://api.trelis.com/dev-api/create-dynamic-link?apiKey=' . $apiKey . "&apiSecret=" . $apiSecret;
+                $isPrime = $this->get_option('prime') === "yes";
+                $isGasless = $this->get_option('gasless') === "yes";
+
+                $apiUrl = 'https://api.trelis.com/stage-env/dev-api/create-dynamic-link?apiKey=' . $apiKey . "&apiSecret=" . $apiSecret;
 
                 $args = array(
                     'headers' => array(
@@ -207,10 +231,11 @@ if (in_array('woocommerce/woocommerce.php', apply_filters('active_plugins', get_
                     'body' => json_encode(array(
                         'productName' => get_bloginfo( 'name' ),
                         'productPrice' => $order->total,
-                        'token' => $token,
+                        'token' => trelis_get_token(),
                         'redirectLink' => $this->get_return_url($order),
-			'isGasless' => true,
-			'fiatCurrency' => $currency
+                        'isGasless' => $isGasless,
+                        'isPrime' => $isPrime,
+                        'fiatCurrency' => trelis_get_currency()
                     ))
                 );
 
