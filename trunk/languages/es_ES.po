@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Trelis Crypto Payments\n"
-"POT-Creation-Date: 2022-11-21 15:45+0000\n"
-"PO-Revision-Date: 2022-11-21 15:46+0000\n"
+"POT-Creation-Date: 2022-12-22 13:52+0000\n"
+"PO-Revision-Date: 2022-12-22 14:11+0000\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: es_ES\n"
@@ -10,7 +10,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Poedit 3.2\n"
+"X-Generator: Poedit 3.2.2\n"
 "X-Poedit-Basepath: ..\n"
 "X-Poedit-Flags-xgettext: --add-comments=translators:\n"
 "X-Poedit-WPHeader: Trelis-ethereum-payment-gateway.php\n"
@@ -29,56 +29,76 @@ msgstr "ETH"
 msgid "USDC"
 msgstr "USDC"
 
-#: Trelis-ethereum-payment-gateway.php:69
-#: Trelis-ethereum-payment-gateway.php:82
-#: Trelis-ethereum-payment-gateway.php:94
+#: Trelis-ethereum-payment-gateway.php:80
+#: Trelis-ethereum-payment-gateway.php:93
+#: Trelis-ethereum-payment-gateway.php:104
 msgid "Failed"
 msgstr "Fallido"
 
-#: Trelis-ethereum-payment-gateway.php:88
+#: Trelis-ethereum-payment-gateway.php:99
 msgid "Already processed"
 msgstr "Ya procesada"
 
-#: Trelis-ethereum-payment-gateway.php:92
-#, fuzzy
-msgid "Expected amount "
-msgstr "Importe previsto"
+#: Trelis-ethereum-payment-gateway.php:102
+msgid "Trelis Payment Failed! Expected amount "
+msgstr "¡Pago fallido de Trelis! Importe previsto "
 
-#: Trelis-ethereum-payment-gateway.php:92
-#, fuzzy
+#: Trelis-ethereum-payment-gateway.php:102
 msgid ", received "
-msgstr ", recibido"
+msgstr ", recibido "
 
-#: Trelis-ethereum-payment-gateway.php:97
-#, fuzzy
+#: Trelis-ethereum-payment-gateway.php:108
+msgid "Pending"
+msgstr "Pendiente"
+
+#: Trelis-ethereum-payment-gateway.php:111
 msgid "Payment complete!"
-msgstr "Pago completo"
+msgstr "¡Pago completo!"
 
-#: Trelis-ethereum-payment-gateway.php:100
-#, fuzzy
+#: Trelis-ethereum-payment-gateway.php:114
 msgid "Processed!"
 msgstr "¡Procesado!"
 
+#: Trelis-ethereum-payment-gateway.php:165
+#, fuzzy, php-format
+msgid "Trelis Prime - 1% discount"
+msgstr "Trelis Prime - 1% discount"
+
 #. Plugin Name of the plugin/theme
-#: Trelis-ethereum-payment-gateway.php:144
+#: Trelis-ethereum-payment-gateway.php:167
 msgid "Trelis Crypto Payments"
 msgstr "Criptopagos Trelis"
 
-#: Trelis-ethereum-payment-gateway.php:160
-msgid "Enable/Disable"
-msgstr "Activar/Desactivar"
-
-#: Trelis-ethereum-payment-gateway.php:161
+#: Trelis-ethereum-payment-gateway.php:180
 #, fuzzy
-msgid "Enable Trelis Pay"
-msgstr "Activar Trelis Pay"
+msgid "Trelis Pay Gateway"
+msgstr "Pasarela de pago Trelis"
 
-#: Trelis-ethereum-payment-gateway.php:196
+#: Trelis-ethereum-payment-gateway.php:181
+msgid "Enable"
+msgstr "Habilitar"
+
+#: Trelis-ethereum-payment-gateway.php:187
 #, fuzzy
-msgid "Trelis does not support that currency"
-msgstr "Trelis no admite esa moneda"
+msgid "Trelis Prime"
+msgstr "Trelis Prime"
 
-#: Trelis-ethereum-payment-gateway.php:240
+#: Trelis-ethereum-payment-gateway.php:188
+#, fuzzy, php-format
+msgid "Offer a 1% discount for using Trelis Pay"
+msgstr "Ofrecer un 1% discount por utilizar Trelis Pay"
+
+#: Trelis-ethereum-payment-gateway.php:194
+#, fuzzy
+msgid "Gasless Payments"
+msgstr "Pagos sin gas"
+
+#: Trelis-ethereum-payment-gateway.php:195
+#, fuzzy
+msgid "Cover gas costs for customer payments"
+msgstr "Cubrir los gastos de gas de los pagos de los clientes"
+
+#: Trelis-ethereum-payment-gateway.php:271
 msgid "Connection error"
 msgstr "Error de conexión"
 
