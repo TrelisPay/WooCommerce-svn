@@ -171,24 +171,24 @@ if (in_array('woocommerce/woocommerce.php', apply_filters('active_plugins', get_
             {
                 $this->form_fields = array(
                     'enabled' => array(
-                        'title' => __('Enable/Disable','trelis-crypto-payments'),
-                        'label' => __('Enable Trelis Pay','trelis-crypto-payments'),
+                        'title' => __('Trelis Pay Gateway','trelis-crypto-payments'),
+                        'label' => __('Enable','trelis-crypto-payments'),
                         'type' => 'checkbox',
                         'description' => '',
                         'default' => 'yes'
                     ),
                     'prime' => array(
                         'title' => __('Trelis Prime','trelis-crypto-payments'),
-                        'label' => __('Enable','trelis-crypto-payments'),
+                        'label' => __('Offer a 1% discount for using Trelis Pay','trelis-crypto-payments'),
                         'type' => 'checkbox',
-                        'description' => '<a href="https://docs.trelis.com">Learn More</a>',
+                        'description' => '<a href="https://docs.trelis.com/features/trelis-prime">Learn how to minimise payment processing charges</a>',
                         'default' => ''
                     ),
                     'gasless' => array(
-                        'title' => __('Gasless Paiments','trelis-crypto-payments'),
-                        'label' => __('Enable','trelis-crypto-payments'),
+                        'title' => __('Gasless Payments','trelis-crypto-payments'),
+                        'label' => __('Cover gas costs for customer payments','trelis-crypto-payments'),
                         'type' => 'checkbox',
-                        'description' => '<a href="https://docs.trelis.com">Learn More</a>',
+                        'description' => '<a href="https://docs.trelis.com/features/gasless-payments">Buy gas credits OR learn more about gasless payments</a>',
                         'default' => ''
                     ),
                     'api_url' => array(
