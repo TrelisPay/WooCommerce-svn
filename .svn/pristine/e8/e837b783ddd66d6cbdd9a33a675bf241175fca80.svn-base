@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Trelis Crypto Payments\n"
 "POT-Creation-Date: 2022-12-22 17:09+0000\n"
-"PO-Revision-Date: 2022-12-27 22:34+0000\n"
+"PO-Revision-Date: 2022-12-22 17:11+0000\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: es_ES\n"
@@ -60,9 +60,9 @@ msgid "Processed!"
 msgstr "¡Procesado!"
 
 #: Trelis-ethereum-payment-gateway.php:165
-#, php-format
+#, fuzzy, php-format
 msgid "Trelis Prime - 1% discount"
-msgstr "Trelis Prime - 1% de descuento"
+msgstr "Trelis Prime - 1% discount"
 
 #. Plugin Name of the plugin/theme
 #: Trelis-ethereum-payment-gateway.php:167
@@ -84,9 +84,9 @@ msgid "Trelis Prime"
 msgstr "Trelis Prime"
 
 #: Trelis-ethereum-payment-gateway.php:188
-#, php-format
+#, fuzzy, php-format
 msgid "Offer a 1% discount for using Trelis Pay"
-msgstr "Ofrecer un 1% de descuento por utilizar Trelis Pay"
+msgstr "Ofrecer un 1% discount por utilizar Trelis Pay"
 
 #: Trelis-ethereum-payment-gateway.php:190
 #, fuzzy
