@@ -99,7 +99,7 @@ function trelis_payment_confirmation_callback()
         return __('Already processed','trelis-crypto-payments');
 
     if ($data->event === "submission.failed" || $data->event === "charge.failed") {
-        $order->add_order_note(__('Trelis Payment Failed! Expected amount ','trelis-crypto-payments') . $data->requiredPaymentAmount . __(', received ','trelis-crypto-payments') . $data->paidAmount, true);
+        $order->add_order_note(__('Trelis Payment Failed! Expected amount ','trelis-crypto-payments') . $data->requiredPaymentAmount . __(', attempted ','trelis-crypto-payments') . $data->paidAmount, true);
         $order->save();
         return __('Failed','trelis-crypto-payments');
     }
