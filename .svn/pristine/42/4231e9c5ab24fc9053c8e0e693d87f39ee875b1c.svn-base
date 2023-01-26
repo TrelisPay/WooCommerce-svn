@@ -148,7 +148,7 @@ if (in_array('woocommerce/woocommerce.php', apply_filters('active_plugins', get_
             public function __construct()
             {
                 $this->id = 'trelis';
-                $this->icon = 'https://www.trelis.com/assets/trelis-2e0ed160.png';
+                $this->icon = 'https://www.trelis.com/assets/trelis.2e0ed160.png';
                 $this->supports = array(
                     'products'
                 );
