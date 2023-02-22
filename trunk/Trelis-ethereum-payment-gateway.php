@@ -158,7 +158,7 @@ if (in_array('woocommerce/woocommerce.php', apply_filters('active_plugins', get_
 	            'subscriptions'
                 );
                 
-                $this->maybe_init_subscriptions()
+                $this->maybe_init_subscriptions();
 
                 $this->trelis_init_form_fields();
                 $this->init_settings();
