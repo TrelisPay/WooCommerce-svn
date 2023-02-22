@@ -8,7 +8,7 @@
  * Plugin Name:       Trelis Crypto Payments
  * Plugin URI:        https://docs.trelis.com/products/woocommerce-plugin
  * Description:       Accept USDC or Ether payments directly to your wallet. Your customers pay by connecting any Ethereum wallet. No Trelis fees!
- * Version:           1.0.20
+ * Version:           1.1.0
  * Requires at least: 6.1
  * Requires PHP:      7.4
  * Author:            Trelis
@@ -150,7 +150,8 @@ if (in_array('woocommerce/woocommerce.php', apply_filters('active_plugins', get_
                 $this->id = 'trelis';
                 $this->icon = 'https://www.trelis.com/assets/trelis-2e0ed160.png';
                 $this->supports = array(
-                    'products'
+                    'products',
+	            'subscriptions'
                 );
 
                 $this->trelis_init_form_fields();
@@ -228,7 +229,26 @@ if (in_array('woocommerce/woocommerce.php', apply_filters('active_plugins', get_
                 $isPrime = $this->get_option('prime') === "yes";
                 $isGasless = $this->get_option('gasless') === "yes";
 
-                $apiUrl = 'https://api.trelis.com/dev-api/create-dynamic-link?apiKey=' . $apiKey . "&apiSecret=" . $apiSecret;
+		$isSubscription = false;
+
+		if ( WC_Subscriptions_Order::order_contains_subscription( $order_id ) ) {
+		    $isSubscription = true;
+		}
+
+		switch ($isSubscription) {
+		  case true:
+		    // code to execute if $isSubscription is true
+		    break;
+		  case false:
+		    // code to execute if $isSubscription is false
+		    break;
+		  default:
+		    // code to execute if $isSubscription is not true or false
+		    break;
+		}
+
+
+                $apiUrl = 'https://api.trelis.com/sandbox-env/dev-api/create-dynamic-link?apiKey=' . $apiKey . "&apiSecret=" . $apiSecret;
 
                 $args = array(
                     'headers' => array(
