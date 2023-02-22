@@ -157,6 +157,8 @@ if (in_array('woocommerce/woocommerce.php', apply_filters('active_plugins', get_
                     'products',
 	            'subscriptions'
                 );
+                
+                $this->maybe_init_subscriptions()
 
                 $this->trelis_init_form_fields();
                 $this->init_settings();
@@ -233,95 +235,95 @@ if (in_array('woocommerce/woocommerce.php', apply_filters('active_plugins', get_
                 $isPrime = $this->get_option('prime') === "yes";
                 $isGasless = $this->get_option('gasless') === "yes";
 
-		$isSubscription = false;
+                $isSubscription = false;
 
-		if ( WC_Subscriptions_Order::order_contains_subscription( $order_id ) ) {
-		    $isSubscription = true;
-		}
+                if ( WC_Subscriptions_Order::order_contains_subscription( $order_id ) ) {
+                    $isSubscription = true;
+                }
 
-		if ($isSubscription) {
-		    $apiUrl = 'https://api.trelis.com/dev-env/dev-api/create-subscription-link?apiKey=' . $apiKey . '&apiSecret=' . $apiSecret;
+                if ($isSubscription) {
+                    $apiUrl = 'https://api.trelis.com/dev-env/dev-api/create-subscription-link?apiKey=' . $apiKey . '&apiSecret=' . $apiSecret;
 
-		    $subscription_interval = WC_Subscriptions_Order::get_subscription_interval($order);
-		    switch ($subscription_interval) {
-			case 'year':
-			    $subscription_period = 'YEARLY';
-			    break;
-			case 'month':
-			    $subscription_period = 'MONTHLY';
-			    break;
-			default:
-			    $subscription_period = 'OTHER';
-			    break;
-		    }
+                    $subscription_interval = WC_Subscriptions_Order::get_subscription_interval($order);
+                    switch ($subscription_interval) {
+                    case 'year':
+                        $subscription_period = 'YEARLY';
+                        break;
+                    case 'month':
+                        $subscription_period = 'MONTHLY';
+                        break;
+                    default:
+                        $subscription_period = 'OTHER';
+                        break;
+                    }
 
-		    $args = array(
-			'headers' => array(
-			    'Content-Type' => 'application/json'
-			),
-			'body' => json_encode(array(
-			    'subscriptionPrice' => WC_Subscriptions_Order::get_price_per_period($order),
-			    'frequency' => $subscription_interval,
-			    'subscriptionPeriod' => $subscription_period,
-			    'subscriptionName' => get_bloginfo('name'),
-			    'fiatCurrency' => trelis_get_currency(),
-			    'subscriptionType' => 'manual',
-			    'redirectLink' => $this->get_return_url($order)
-			))
-		    );
+                    $args = array(
+                    'headers' => array(
+                        'Content-Type' => 'application/json'
+                    ),
+                    'body' => json_encode(array(
+                        'subscriptionPrice' => WC_Subscriptions_Order::get_price_per_period($order),
+                        'frequency' => $subscription_interval,
+                        'subscriptionPeriod' => $subscription_period,
+                        'subscriptionName' => get_bloginfo('name'),
+                        'fiatCurrency' => trelis_get_currency(),
+                        'subscriptionType' => 'manual',
+                        'redirectLink' => $this->get_return_url($order)
+                    ))
+                    );
 
-		} else {
-		    $apiUrl = 'https://api.trelis.com/dev-env/dev-api/create-dynamic-link?apiKey=' . $apiKey . '&apiSecret=' . $apiSecret;
+                } else {
+                    $apiUrl = 'https://api.trelis.com/dev-env/dev-api/create-dynamic-link?apiKey=' . $apiKey . '&apiSecret=' . $apiSecret;
 
-		    $args = array(
-			'headers' => array(
-			    'Content-Type' => 'application/json'
-			),
-			'body' => json_encode(array(
-			    'productName' => get_bloginfo('name'),
-			    'productPrice' => $order->total,
-			    'token' => trelis_get_token(),
-			    'redirectLink' => $this->get_return_url($order),
-			    'isGasless' => $isGasless,
-			    'isPrime' => $isPrime,
-			    'fiatCurrency' => trelis_get_currency()
-			))
-		    );
-		}
+                    $args = array(
+                    'headers' => array(
+                        'Content-Type' => 'application/json'
+                    ),
+                    'body' => json_encode(array(
+                        'productName' => get_bloginfo('name'),
+                        'productPrice' => $order->total,
+                        'token' => trelis_get_token(),
+                        'redirectLink' => $this->get_return_url($order),
+                        'isGasless' => $isGasless,
+                        'isPrime' => $isPrime,
+                        'fiatCurrency' => trelis_get_currency()
+                    ))
+                    );
+                }
 
-		$response = wp_remote_post($apiUrl, $args);
+                $response = wp_remote_post($apiUrl, $args);
 
-		if (is_wp_error($response)) {
-		    wc_add_notice($response->get_error_message(), 'error');
-		    wc_add_notice(__('Connection error', 'trelis-crypto-payments'), 'error');
-		    return;
-		}
+                if (is_wp_error($response)) {
+                    wc_add_notice($response->get_error_message(), 'error');
+                    wc_add_notice(__('Connection error', 'trelis-crypto-payments'), 'error');
+                    return;
+                }
 
-		$body = json_decode($response['body'], true);
+                $body = json_decode($response['body'], true);
 
-		if ($isSubscription) {
-		    $productLink = $body['data']['subscriptionLink'];
-		} else {
-		    $productLink = $body['data']['productLink'];
-		}
+                if ($isSubscription) {
+                    $productLink = $body['data']['subscriptionLink'];
+                } else {
+                    $productLink = $body['data']['productLink'];
+                }
 
-		if ($body['message'] == 'Successfully created product' || $body['message'] == 'Successfully created subscription link') {
-		    $order->add_order_note($response['body'], false);
-		    $paymentID = array_slice(explode('/', $productLink), -1)[0]; //paymentID is the product or subscription link
-		    $order->set_transaction_id($paymentID);
-		    $order->save();
-		    $woocommerce->cart->empty_cart();
+                if ($body['message'] == 'Successfully created product' || $body['message'] == 'Successfully created subscription link') {
+                    $order->add_order_note($response['body'], false);
+                    $paymentID = array_slice(explode('/', $productLink), -1)[0]; //paymentID is the product or subscription link
+                    $order->set_transaction_id($paymentID);
+                    $order->save();
+                    $woocommerce->cart->empty_cart();
 
-		    return array(
-			'result' => 'success',
-			'redirect' => $productLink,
-		    );
-		} else {
-		    wc_add_notice($body['error'], 'error');
-		    return;
-		}
+                    return array(
+                    'result' => 'success',
+                    'redirect' => $productLink,
+                    );
+                } else {
+                    wc_add_notice($body['error'], 'error');
+                    return;
+                }
 
-	    }
+	        }
         }
     }
 }
