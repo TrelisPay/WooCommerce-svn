@@ -235,63 +235,89 @@ if (in_array('woocommerce/woocommerce.php', apply_filters('active_plugins', get_
 		    $isSubscription = true;
 		}
 
-		switch ($isSubscription) {
-		  case true:
-		    // code to execute if $isSubscription is true
-		    break;
-		  case false:
-		    // code to execute if $isSubscription is false
-		    break;
-		  default:
-		    // code to execute if $isSubscription is not true or false
-		    break;
+		if ($isSubscription) {
+		    $apiUrl = 'https://api.trelis.com/dev-env/dev-api/create-subscription-link?apiKey=' . $apiKey . '&apiSecret=' . $apiSecret;
+
+		    $subscription_interval = WC_Subscriptions_Order::get_subscription_interval($order);
+		    switch ($subscription_interval) {
+			case 'year':
+			    $subscription_period = 'YEARLY';
+			    break;
+			case 'month':
+			    $subscription_period = 'MONTHLY';
+			    break;
+			default:
+			    $subscription_period = 'OTHER';
+			    break;
+		    }
+
+		    $args = array(
+			'headers' => array(
+			    'Content-Type' => 'application/json'
+			),
+			'body' => json_encode(array(
+			    'subscriptionPrice' => WC_Subscriptions_Order::get_price_per_period($order),
+			    'frequency' => $subscription_interval,
+			    'subscriptionPeriod' => $subscription_period,
+			    'subscriptionName' => get_bloginfo('name'),
+			    'fiatCurrency' => trelis_get_currency(),
+			    'subscriptionType' => 'manual',
+			    'redirectLink' => $this->get_return_url($order)
+			))
+		    );
+
+		} else {
+		    $apiUrl = 'https://api.trelis.com/dev-env/dev-api/create-dynamic-link?apiKey=' . $apiKey . '&apiSecret=' . $apiSecret;
+
+		    $args = array(
+			'headers' => array(
+			    'Content-Type' => 'application/json'
+			),
+			'body' => json_encode(array(
+			    'productName' => get_bloginfo('name'),
+			    'productPrice' => $order->total,
+			    'token' => trelis_get_token(),
+			    'redirectLink' => $this->get_return_url($order),
+			    'isGasless' => $isGasless,
+			    'isPrime' => $isPrime,
+			    'fiatCurrency' => trelis_get_currency()
+			))
+		    );
 		}
 
+		$response = wp_remote_post($apiUrl, $args);
 
-                $apiUrl = 'https://api.trelis.com/sandbox-env/dev-api/create-dynamic-link?apiKey=' . $apiKey . "&apiSecret=" . $apiSecret;
+		if (is_wp_error($response)) {
+		    wc_add_notice($response->get_error_message(), 'error');
+		    wc_add_notice(__('Connection error', 'trelis-crypto-payments'), 'error');
+		    return;
+		}
 
-                $args = array(
-                    'headers' => array(
-                        'Content-Type' => "application/json"
-                    ),
-                    'body' => json_encode(array(
-                        'productName' => get_bloginfo( 'name' ),
-                        'productPrice' => $order->total,
-                        'token' => trelis_get_token(),
-                        'redirectLink' => $this->get_return_url($order),
-                        'isGasless' => $isGasless,
-                        'isPrime' => $isPrime,
-                        'fiatCurrency' => trelis_get_currency()
-                    ))
-                );
+		$body = json_decode($response['body'], true);
 
-                $response = wp_remote_post($apiUrl, $args);
+		if ($isSubscription) {
+		    $productLink = $body['data']['subscriptionLink'];
+		} else {
+		    $productLink = $body['data']['productLink'];
+		}
 
-                if (!is_wp_error($response)) {
-                    $body = json_decode($response['body'], true);
+		if ($body['message'] == 'Successfully created product' || $body['message'] == 'Successfully created subscription link') {
+		    $order->add_order_note($response['body'], false);
+		    $paymentID = array_slice(explode('/', $productLink), -1)[0];
+		    $order->set_transaction_id($paymentID);
+		    $order->save();
+		    $woocommerce->cart->empty_cart();
 
-                    if ($body["message"] == 'Successfully created product') {
-                        $order->add_order_note($response['body'], false);
-                        $str = explode("/", $body["data"]["productLink"]);
-                        $paymentID = $str[count($str)-1];
-                        $order->set_transaction_id($paymentID);
-                        $order->save();
-                        $woocommerce->cart->empty_cart();
+		    return array(
+			'result' => 'success',
+			'redirect' => $productLink,
+		    );
+		} else {
+		    wc_add_notice($body['error'], 'error');
+		    return;
+		}
 
-                        return array(
-                            'result' => 'success',
-                            'redirect' => $body["data"]["productLink"],
-                        );
-                    } else {
-                        wc_add_notice($body["error"], 'error');
-                        return;
-                    }
-                } else {
-                    wc_add_notice($response->get_error_message(), 'error');
-                    wc_add_notice(__('Connection error','trelis-crypto-payments'), 'error');
-                    return;
-                }
-            }
+	    }
         }
     }
 }
