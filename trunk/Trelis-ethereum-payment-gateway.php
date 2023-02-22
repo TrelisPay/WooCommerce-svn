@@ -154,11 +154,17 @@ if (in_array('woocommerce/woocommerce.php', apply_filters('active_plugins', get_
                 $this->id = 'trelis';
                 $this->icon = 'https://www.trelis.com/assets/trelis-2e0ed160.png';
                 $this->supports = array(
-                    'products',
-	            'subscriptions'
+                    'products', 
+                    'subscriptions',
+                    'subscription_cancellation', 
+                    'subscription_suspension', 
+                    'subscription_reactivation',
+                    'subscription_amount_changes',
+                    'subscription_date_changes',
+                    'subscription_payment_method_change'
+                    'subscription_payment_method_change_customer',
+                    'subscription_payment_method_change_admin',
                 );
-                
-                $this->maybe_init_subscriptions();
 
                 $this->trelis_init_form_fields();
                 $this->init_settings();
