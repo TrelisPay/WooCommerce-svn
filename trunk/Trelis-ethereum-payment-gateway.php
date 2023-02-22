@@ -77,23 +77,27 @@ function trelis_payment_confirmation_callback()
 
     $expected_signature = hash_hmac('sha256', $json,  $trelis->get_option('webhook_secret'));
     if ( $expected_signature != $_SERVER["HTTP_SIGNATURE"])
-        return __('Failed','trelis-crypto-payments');
+        return __('Invalid webhook signature','trelis-crypto-payments');
 
     $data = json_decode($json);
+
+    $meta_value = isset($data->merchantProductKey) ? $data->merchantProductKey : $data->subscriptionLink;
 
     $orders = get_posts( array(
         'post_type' => 'shop_order',
         'posts_per_page' => -1,
         'post_status' => 'any',
         'meta_key'   => '_transaction_id',
-        'meta_value' => json_decode(json_encode($data->mechantProductKey)),
+        'meta_value' => $meta_value,
     ));
 
-    if (empty($orders))
+    if (empty($orders)) {
         return __('Failed','trelis-crypto-payments');
+    }
 
     $order_id = $orders[0]->ID;
     $order = wc_get_order($order_id);
+
 
     if ($order->get_status() == 'processing' || $order->get_status() == 'complete')
         return __('Already processed','trelis-crypto-payments');
@@ -303,7 +307,7 @@ if (in_array('woocommerce/woocommerce.php', apply_filters('active_plugins', get_
 
 		if ($body['message'] == 'Successfully created product' || $body['message'] == 'Successfully created subscription link') {
 		    $order->add_order_note($response['body'], false);
-		    $paymentID = array_slice(explode('/', $productLink), -1)[0];
+		    $paymentID = array_slice(explode('/', $productLink), -1)[0]; //paymentID is the product or subscription link
 		    $order->set_transaction_id($paymentID);
 		    $order->save();
 		    $woocommerce->cart->empty_cart();
