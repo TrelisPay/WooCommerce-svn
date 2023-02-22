@@ -168,11 +168,11 @@ if (in_array('woocommerce/woocommerce.php', apply_filters('active_plugins', get_
                 $this->api_secret = $this->get_option('api_secret');
                 add_action('woocommerce_update_options_payment_gateways_' . $this->id, array($this, 'process_admin_options'));
 
-		if($this->get_option('prime') === "yes"){
-			$this->title = __('Trelis Prime - 1% discount','trelis-crypto-payments');
-		} else {
-			$this->title = __('Trelis Crypto Payments','trelis-crypto-payments');
-		}
+                if($this->get_option('prime') === "yes"){
+                    $this->title = __('Trelis Prime - 1% discount','trelis-crypto-payments');
+                } else {
+                    $this->title = __('Trelis Crypto Payments','trelis-crypto-payments');
+                }
 
                 if (is_checkout()) {
                     wp_register_style("trelis", plugins_url('/assets/css/trelis.css', __FILE__), '', '1.0.0');
