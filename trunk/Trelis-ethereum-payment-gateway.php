@@ -247,6 +247,8 @@ if (in_array('woocommerce/woocommerce.php', apply_filters('active_plugins', get_
                     $isSubscription = true;
                 }
 
+                $order->add_order_note($isSubscription, false);
+
                 if ($isSubscription) {
                     $apiUrl = 'https://api.trelis.com/dev-env/dev-api/create-subscription-link?apiKey=' . $apiKey . '&apiSecret=' . $apiSecret;
 
