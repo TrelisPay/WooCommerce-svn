@@ -1,34 +1,32 @@
 === Trelis Crypto Payments ===
 Contributors: ronantrelis
 Donate link: https://shop.trelis.com/product/woocommerce-plugin-donation/
-Tags: crypto, payment, ethereum, USDC, ether, eth, cryptocurrency, non-custodial, payments, payment gateway, metamask
+Tags: web3, recurring payments, subscriptions, woocommerce, memberpress, crypto, payment, polygon, USDC, cryptocurrency, non-custodial, payments, payment gateway, metamask
 Requires at least: 6.1
 Tested up to: 6.1
-Stable tag: 1.0.20
+Stable tag: 1.0.21
 Requires PHP: 7.4
 License: GPL-3.0
 License URI: http://www.gnu.org/licenses/gpl-3.0.txt
 
-Accept USDC or Ether payments directly to your wallet with no Trelis fees. Your customers pay by connecting any major Ethereum wallet.
+Accept web3 recurring payments and gasless payments directly to your wallet. Your customers pay by connecting any major Polygon wallet.
 
 == Description ==
 
-= Non-custodial crypto payments made easy, with no Trelis fees =
+= Non-custodial crypto payments made easy =
 
-Accept USDC or ETH directly to your wallet. Allow customers to pay by connecting any major Ethereum wallet (Metamask, Coinbase Wallet, Rainbow Wallet, Ledger, Trezor). 
+Accept USDC directly to your wallet. Allow customers to pay by connecting any major Polygon wallet (Metamask, Coinbase Wallet, Rainbow Wallet, Ledger, Trezor). 
 
 = What are the benefits for me (the store owner)? =
 
+* **Accept recurring payments** Customers can subscribe for automatic monthly or annual payments
 * **Accept payments within mins.** Install the plugin and add api keys from Trelis.com
-* **Get started for free.** Trelis does not charge transaction fees
-* **Increase conversions** from crypto-native customers
-* **Avoid chargebacks.**
-* **Get immediate access to funds** deposited directly deposited to your wallet
+* **Get started for free.** No blockchain or transaction fees on first $1000 per month.
 
 = What are the benefits for my customers? =
 
-* **Pay with any major Ethereum wallet.** Metamask, Coinbase, Rainbow, Ledger, Trezor
-* **Gasless payments.** Customers can pay in USDC, no ETH required!
+* **Pay with any major Polygon wallet.** Metamask, Coinbase, Rainbow, Ledger, Trezor
+* **Gasless payments.** Customers pay in USDC, no gas required!
 * **1% Discount** Customers get a 1% discount with Trelis Prime.
 
 == Getting Started == 
@@ -46,26 +44,22 @@ Accept USDC or ETH directly to your wallet. Allow customers to pay by connecting
 
 = How much are transaction fees? =
 
-If gasless payments are turned on, the merchant pays for Ethereum transaction fees (gas). Otherwise, the customers pays for gas. Trelis does not charge a transaction fee on top of this.
+There are no blockchain or transaction fees for the first $1,000 in volume per month. For further details on pricing see [docs.Trelis.com](https://docs.Trelis.com)
 
 = What currencies are supported? =
 
-* Trelis supports WooCommerce stores with the following currencies: USD, EUR, BRL, GBP, CNY, JPY, INR, CAD, RUB, KRW, AUD, MXN, IDR, SAR, CHF, TWD, PLN, TRY, SEK, ARS, NOK, THB, ILS, NGN, AED, MYR, EGP, ZAR, SGD, PHP, VND, DKK, BDT, HKD, COP, PKR, CLP, IQD, CZK, RON, NZD .
+* Trelis supports WooCommerce and MemberPress stores with the following currencies: USD, EUR, BRL, GBP, CNY, JPY, INR, CAD, RUB, KRW, AUD, MXN, IDR, SAR, CHF, TWD, PLN, TRY, SEK, ARS, NOK, THB, ILS, NGN, AED, MYR, EGP, ZAR, SGD, PHP, VND, DKK, BDT, HKD, COP, PKR, CLP, IQD, CZK, RON, NZD .
 * Customers will be charged in USDC.
 * Alternately, this plugin allows merchants to directly price products in USDC or ETH.
 * This plugin **will not work** for products priced in other currencies.
 
 = What is the maximum payment amount? =
 
-* The maximum payment amount is 100 USDC or 0.1 ETH. Reach out to [Support](https://docs.trelis.com/support) to inquire about our enterprise offerings.
+* The maximum payment amount is 100 USDC for unregistered accounts. Register for higher amounts at [Trelis.com](Trelis.com).
 
 = What are the terms and conditions of using Trelis Crypto Payments? =
 
 * Users of Trelis Crypto Payments plugin with Trelis' api must agree to Trelis' [Terms of Service](https://docs.trelis.com/terms-of-service) as a condition of use.
-
-= Why aren't payments showing as gasless? =
-
-* Merchants can only offer gasless payments to customers if they have prepaid gas credits. Gas credits can be purchased at Trelis.com and must be purchased from the same account from which the api keys are generated. Further, payments will default to standard (i.e. customer pays for gas) if gas costs exceed 5% of the transaction amount.
 
 == Screenshots ==
 
@@ -73,12 +67,12 @@ If gasless payments are turned on, the merchant pays for Ethereum transaction fe
 2. Configuring the Trelis plugin with api keys
 3. Sample checkout page offering Trelis Pay
 4. Payment screen ("Trelis Art" will be replaced by your store name)
-5. Supported Ethereum wallets
+5. Supported wallets
 
 == Changelog ==
 
-= Unreleased =
-* Allow for recurring subscription payments
+= 1.0.21 =
+* Add support for Woo Subscriptions and Memberpress
 
 = 1.0.20 =
 * Fix logo on checkout
