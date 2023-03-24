@@ -288,7 +288,7 @@ class MeprTrelisGateway extends \MeprBaseRealGateway
 		wp_mail( 'jalpesh@yopmail.com', 'MEPR Process Payment webhook',print_r($json, true), $headers );
 		// debug mail end
 
-		// $merchantKey = '';
+		$merchantKey = '';
 		if ($request->merchantProductKey) {
 			$merchantKey = $request->merchantProductKey;
 		} else {
@@ -301,93 +301,85 @@ class MeprTrelisGateway extends \MeprBaseRealGateway
 			$customerWalletId = $request->customer;
 		}
 
-		if($merchantKey){
-			if ($transaction_meta = $this->get_mepr_transaction_id($merchantKey)) {
+		if ($transaction_meta = $this->get_mepr_transaction_id($merchantKey)) {
 
-				$transaction_id = $transaction_meta[0]->transaction_id;
-				$txn = new MeprTransaction($transaction_id);
-				$sub = new MeprSubscription($txn->subscription_id);
-	
-				if ($request->event == 'submission.success') {
-					$txn->status = MeprTransaction::$pending_str;
-					$sub->status = MeprSubscription::$pending_str;
-	
-					MeprTransaction::update($txn);
-					MeprSubscription::update($sub);
-					
-				} else if ($request->event == 'charge.success') {
-					$txn->status = MeprTransaction::$confirmed_str;
-					$sub->status = MeprSubscription::$active_str;
-	
-					MeprTransaction::update($txn);
-					MeprSubscription::update($sub);
-	
-				} else if ($request->event == 'charge.failed') {
-					$txn->status = MeprTransaction::$pending_str;
-					$sub->status = MeprSubscription::$pending_str;
-					
-					MeprTransaction::update($txn);
-					MeprSubscription::update($sub);
-	
-				} else if ($request->event == 'subscription.create.success') {
-					$this->update_mepr_subscription_meta($txn->subscription_id, '__trelis_customer_wallet_id', $customerWalletId);
-	
-					$txn->status = MeprTransaction::$confirmed_str;
-					$sub->status = MeprSubscription::$pending_str;
-	
-					MeprTransaction::update($txn);
-					MeprSubscription::update($sub);
-	
-				} else if ($request->event == 'subscription.create.failed') {
-					$this->update_mepr_subscription_meta($txn->subscription_id, '__trelis_customer_wallet_id', $customerWalletId);
-	
-					$txn->status = MeprTransaction::$pending_str;
-					$sub->status = MeprSubscription::$pending_str;
-	
-					MeprTransaction::update($txn);
-					MeprSubscription::update($sub);
-	
-				} else if ($request->event == 'subscription.charge.failed') {
-					$this->update_mepr_subscription_meta($txn->subscription_id, '__trelis_customer_wallet_id', $customerWalletId);
-	
-					$txn->status = MeprTransaction::$failed_str;
-					$sub->status = MeprSubscription::$pending_str;
-					
-					MeprTransaction::update($txn);
-					MeprSubscription::update($sub);
-	
-				} else if ($request->event == 'subscription.charge.success') {
-	
-					$this->update_mepr_subscription_meta($txn->subscription_id, '__trelis_customer_wallet_id', $customerWalletId);
-	
-					$txn->status = MeprTransaction::$confirmed_str;
-					$sub->status = MeprSubscription::$active_str;
-					
-					MeprTransaction::update($txn);
-					MeprSubscription::update($sub);
-	
-				}  else if ($request->event == 'subscription.cancellation.failed') {
-					$this->update_mepr_subscription_meta($txn->subscription_id, '__trelis_customer_wallet_id', $customerWalletId);
-				}
-			} else {
-				throw new MeprGatewayException(__('Transaction id is not available in transaction_meta.', 'memberpress'));
-			} 
-		} else if ($request->event == 'subscription.cancellation.success') {
-		
-			$subscription_id = $this->get_mepr_subscription_id_by_walltet_id($customerWalletId);
-			if(count($subscription_id)){
-				$sub = new MeprSubscription($subscription_id[0]->subscription_id);
-				$txndata = MeprTransaction::get_one_by_subscription_id($subscription_id[0]->subscription_id);
-				$txn = new MeprTransaction($txndata->id);
-			
-				$sub->status = MeprSubscription::$cancelled_str;
+			$transaction_id = $transaction_meta[0]->transaction_id;
+			$txn = new MeprTransaction($transaction_id);
+			$sub = new MeprSubscription($txn->subscription_id);
+
+			if ($request->event == 'submission.success') {
+				$txn->status = MeprTransaction::$pending_str;
+				$sub->status = MeprSubscription::$pending_str;
+
+				MeprTransaction::update($txn);
+				MeprSubscription::update($sub);
+				
+			} else if ($request->event == 'charge.success') {
+				$txn->status = MeprTransaction::$confirmed_str;
+				$sub->status = MeprSubscription::$active_str;
+
+				MeprTransaction::update($txn);
 				MeprSubscription::update($sub);
 
-				// $txn->status = MeprTransaction::$pending_str;
-				// MeprTransaction::update($txn);
+			} else if ($request->event == 'charge.failed') {
+				$txn->status = MeprTransaction::$pending_str;
+				$sub->status = MeprSubscription::$pending_str;
+				
+				MeprTransaction::update($txn);
+				MeprSubscription::update($sub);
+
+			} else if ($request->event == 'subscription.create.success') {
+				$this->update_mepr_subscription_meta($txn->subscription_id, '__trelis_customer_wallet_id', $customerWalletId);
+
+				$txn->status = MeprTransaction::$confirmed_str;
+				$sub->status = MeprSubscription::$pending_str;
+
+				MeprTransaction::update($txn);
+				MeprSubscription::update($sub);
+
+			} else if ($request->event == 'subscription.create.failed') {
+				$this->update_mepr_subscription_meta($txn->subscription_id, '__trelis_customer_wallet_id', $customerWalletId);
+
+				$txn->status = MeprTransaction::$pending_str;
+				$sub->status = MeprSubscription::$pending_str;
+
+				MeprTransaction::update($txn);
+				MeprSubscription::update($sub);
+
+			} else if ($request->event == 'subscription.charge.failed') {
+				$this->update_mepr_subscription_meta($txn->subscription_id, '__trelis_customer_wallet_id', $customerWalletId);
+
+				$txn->status = MeprTransaction::$failed_str;
+				$sub->status = MeprSubscription::$pending_str;
+				
+				MeprTransaction::update($txn);
+				MeprSubscription::update($sub);
+
+			} else if ($request->event == 'subscription.charge.success') {
+
+				$this->update_mepr_subscription_meta($txn->subscription_id, '__trelis_customer_wallet_id', $customerWalletId);
+
+				$txn->status = MeprTransaction::$confirmed_str;
+				$sub->status = MeprSubscription::$active_str;
+				
+				MeprTransaction::update($txn);
+				MeprSubscription::update($sub);
+
+			} else if ($request->event == 'subscription.cancellation.success') {
+				$this->update_mepr_subscription_meta($txn->subscription_id, '__trelis_customer_wallet_id', $customerWalletId);
+
+				$txn->status = MeprTransaction::$pending_str;
+				$sub->status = MeprSubscription::$cancelled_str;
+
+				MeprTransaction::update($txn);
+				MeprSubscription::update($sub);
+				
+			} else if ($request->event == 'subscription.cancellation.failed') {
+				$this->update_mepr_subscription_meta($txn->subscription_id, '__trelis_customer_wallet_id', $customerWalletId);
 			}
+		} else {
+			throw new MeprGatewayException(__('Transaction id is not available in transaction_meta.', 'memberpress'));
 		}
-		
 	}
 
 	public function process_refund($txn)
@@ -477,8 +469,7 @@ class MeprTrelisGateway extends \MeprBaseRealGateway
 			), $sub);
 
 			// Yeah ... we're cancelling here bro ... but this time we don't want to restart again
-			$res = $this->trelis_api->send_request("cancel-subscription", $args);
-
+			$this->trelis_api->send_request("cancel-subscription", $args);
 
 			if (!$sub) {
 				return false;
@@ -489,8 +480,8 @@ class MeprTrelisGateway extends \MeprBaseRealGateway
 				return $sub;
 			}
 
-			// $sub->status = MeprSubscription::$cancelled_str;
-			// $sub->update();
+			$sub->status = MeprSubscription::$cancelled_str;
+			$sub->update();
 
 			$sub->limit_reached_actions();
 
@@ -611,13 +602,6 @@ class MeprTrelisGateway extends \MeprBaseRealGateway
 		global $wpdb;
 		return $wpdb->get_results("SELECT * FROM  {$wpdb->prefix}mepr_subscription_meta WHERE subscription_id = {$subscription_id} and meta_key= '{$meta_key}'");
 	}
-
-	public function get_mepr_subscription_id_by_walltet_id($wallet_id)
-	{
-		global $wpdb;
-		return $wpdb->get_results("SELECT DISTINCT subscription_id FROM  {$wpdb->prefix}mepr_subscription_meta WHERE meta_key= '__trelis_customer_wallet_id' and meta_value = '{$wallet_id}'");
-	}
-
 
 	public function update_mepr_transaction_meta($txn_id, $meta_key, $meta_value)
 	{

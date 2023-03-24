@@ -15,7 +15,7 @@
  * @wordpress-plugin
  * Plugin Name:       Trelis Crypto Payments
  * Plugin URI:        https://docs.trelis.com/products/woocommerce-plugin
- * Description:       Accept USDC payments directly to your wallet with no transaction fees. Includes support for Woo Subscriptions and MemberPress.
+ * Description:       Accept USDC or Ether payments directly to your wallet. Your customers pay by connecting any Ethereum wallet. No Trelis fees!
  * Version:           1.0.21
  * Requires at least: 6.1
  * Requires PHP:      7.4
@@ -40,7 +40,7 @@ if (!defined('WPINC')) {
 define('TRELIS_CRYPTO_PAYMENTS_VERSION', '1.0.0');
 
 
-define('TRELIS_API_URL', 'https://api.trelis.com/dev-api/');
+define('TRELIS_API_URL', 'https://api.trelis.com/dev-env/dev-api/');
 
 define('TRELIS_PLUGIN_URL', trailingslashit(plugin_dir_url(__FILE__)));
 define('TRELIS_PLUGIN_DIR', trailingslashit(plugin_dir_path(__FILE__)));

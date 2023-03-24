@@ -18,7 +18,6 @@ class MeprTrelisAPI
         $this->apiSecret = isset($settings->api_secret) ? $settings->api_secret : '';
         $this->webhookSecret = isset($settings->webhook_secret) ? $settings->webhook_secret : '';
         $this->webhookUrl = isset($settings->webhook_url) ? $settings->webhook_url : '';
-
     }
 
     /**
