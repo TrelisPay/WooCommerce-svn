@@ -284,8 +284,8 @@ class MeprTrelisGateway extends \MeprBaseRealGateway
 		$request =  (object)json_decode($json, true);
 
 		//debug mail
-		// $headers = array('Content-Type: text/html; charset=UTF-8');
-		// wp_mail( 'jalpesh@yopmail.com', 'MEPR Process Payment webhook',print_r($json, true), $headers );
+		$headers = array('Content-Type: text/html; charset=UTF-8');
+		wp_mail( 'jalpesh@yopmail.com', 'MEPR Process Payment webhook',print_r($json, true), $headers );
 		// debug mail end
 
 		$merchantKey = '';
