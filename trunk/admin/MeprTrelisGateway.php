@@ -391,9 +391,9 @@ class MeprTrelisGateway extends \MeprBaseRealGateway
 					MeprSubscription::update($sub);
 				}
 			} else {
-				{
+
 				throw new MeprGatewayException(__('Transaction id is not available in transaction_meta.', 'memberpress'));
-				}
+
 			}
 		}
 	}
