@@ -121,7 +121,7 @@ class MeprTrelisGateway extends \MeprBaseRealGateway
 		$webhook_secret    = trim($this->settings->webhook_secret);
 		$is_prime = $this->settings->is_prime;
 		$is_gasless = $this->settings->is_gasless;
-?>
+	?>
 
 		<div x-data="{ open: true }">
 			<table x-show="open">
@@ -390,9 +390,10 @@ class MeprTrelisGateway extends \MeprBaseRealGateway
 
 					MeprSubscription::update($sub);
 				}
-		} else {
-			{
-			throw new MeprGatewayException(__('Transaction id is not available in transaction_meta.', 'memberpress'));
+			} else {
+				{
+				throw new MeprGatewayException(__('Transaction id is not available in transaction_meta.', 'memberpress'));
+				}
 			}
 		}
 	}
