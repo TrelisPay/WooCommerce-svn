@@ -121,7 +121,7 @@ class MeprTrelisGateway extends \MeprBaseRealGateway
 		$webhook_secret    = trim($this->settings->webhook_secret);
 		$is_prime = $this->settings->is_prime;
 		$is_gasless = $this->settings->is_gasless;
-?>
+	?>
 
 		<div x-data="{ open: true }">
 			<table x-show="open">
@@ -365,20 +365,36 @@ class MeprTrelisGateway extends \MeprBaseRealGateway
 				MeprTransaction::update($txn);
 				MeprSubscription::update($sub);
 
-			} else if ($request->event == 'subscription.cancellation.success') {
-				$this->update_mepr_subscription_meta($txn->subscription_id, '__trelis_customer_wallet_id', $customerWalletId);
-
-				$txn->status = MeprTransaction::$pending_str;
-				$sub->status = MeprSubscription::$cancelled_str;
-
-				MeprTransaction::update($txn);
-				MeprSubscription::update($sub);
-				
 			} else if ($request->event == 'subscription.cancellation.failed') {
+
 				$this->update_mepr_subscription_meta($txn->subscription_id, '__trelis_customer_wallet_id', $customerWalletId);
+			
+			} else if ($request->event == 'subscription.cancellation.success') {
+
+				$subscription_meta = $this->get_mepr_subscription_by_wallet_id($customerWalletId);
+
+				if ($subscription_meta) {
+					$transaction = $this->get_mepr_transaction_by_subscription_id($subscription_meta[0]->id);
+
+					$sub = new MeprSubscription($subscription_meta[0]->id);
+				
+					$txn = new MeprTransaction($transaction[0]->id);
+
+					$this->update_mepr_subscription_meta($txn->subscription_id, '__trelis_customer_wallet_id', $customerWalletId);
+				
+					$txn->status = MeprTransaction::$pending_str;
+				
+					$sub->status = MeprSubscription::$cancelled_str;
+				
+					MeprTransaction::update($txn);
+
+					MeprSubscription::update($sub);
+				}
+			} else {
+
+				throw new MeprGatewayException(__('Transaction id is not available in transaction_meta.', 'memberpress'));
+
 			}
-		} else {
-			throw new MeprGatewayException(__('Transaction id is not available in transaction_meta.', 'memberpress'));
 		}
 	}
 
