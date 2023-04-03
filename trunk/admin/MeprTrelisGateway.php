@@ -628,26 +628,27 @@ class MeprTrelisGateway extends \MeprBaseRealGateway
 				$this->update_mepr_subscription_meta($txn->subscription_id, '__trelis_customer_wallet_id', $customerWalletId);
 			}
 		} else if ($request->event == 'subscription.cancellation.success') {
+			// If the subscription cancellation event is successful, retrieve the corresponding subscription using the given Trelis customer wallet ID
 
-
+			// Retrieve the subscription object associated with the Trelis customer wallet ID
 			$subscription_meta = $this->get_mepr_subscription_by_wallet_id($customerWalletId);
-
+		
 			if ($subscription_meta) {
+				// Retrieve the transaction associated with the subscription
 				$transaction = $this->get_mepr_transaction_by_subscription_id($subscription_meta[0]->id);
-
-
+		
+				// Create new MeprSubscription and MeprTransaction objects from the retrieved IDs
 				$sub = new MeprSubscription($subscription_meta[0]->id);
-				
 				$txn = new MeprTransaction($transaction[0]->id);
-
+		
+				// Update the subscription meta data with the given Trelis customer wallet ID
 				$this->update_mepr_subscription_meta($txn->subscription_id, '__trelis_customer_wallet_id', $customerWalletId);
-				
+		
+				// Update the transaction and subscription statuses accordingly
 				$txn->status = MeprTransaction::$pending_str;
-				
 				$sub->status = MeprSubscription::$cancelled_str;
-				
+		
 				MeprTransaction::update($txn);
-
 				MeprSubscription::update($sub);
 			}
 		} else {
@@ -1061,15 +1062,15 @@ class MeprTrelisGateway extends \MeprBaseRealGateway
 		return $wpdb->get_results("SELECT * FROM  {$wpdb->prefix}mepr_subscription_meta WHERE subscription_id = {$subscription_id} and meta_key= '{$meta_key}'");
 	}
 
+	// This function retrieves a MeprSubscription object from the database by the Trelis customer wallet ID associated with it.
 	public function get_mepr_subscription_by_wallet_id($customerWalletId)
-
 	{
-
 		global $wpdb;
-
-		return $wpdb->get_results("SELECT DISTINCT ms.id FROM  {$wpdb->prefix}mepr_subscription_meta as sm 
-		RIGHT JOIN  {$wpdb->prefix}mepr_subscriptions as ms ON ms.id = sm.subscription_id
-		WHERE sm.meta_value = '{$customerWalletId}' and sm.meta_key= '__trelis_customer_wallet_id' ");
+		
+		// Perform a database query to retrieve the subscription object with the given customer wallet ID
+		return $wpdb->get_results("SELECT DISTINCT ms.id FROM {$wpdb->prefix}mepr_subscription_meta as sm 
+								RIGHT JOIN {$wpdb->prefix}mepr_subscriptions as ms ON ms.id = sm.subscription_id
+								WHERE sm.meta_value = '{$customerWalletId}' and sm.meta_key= '__trelis_customer_wallet_id'");
 	}
 
 
