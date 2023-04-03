@@ -36,19 +36,9 @@ class MeprTrelisGateway extends \MeprBaseRealGateway
 
 			'process-payments',
 
-			'process-refunds',
-
 			'create-subscriptions',
 
-			'cancel-subscriptions',
-
-			'update-subscriptions',
-
-			'suspend-subscriptions',
-
-			'resume-subscriptions',
-
-			'subscription-trial-payment'
+			'cancel-subscriptions'
 
 		);
 
