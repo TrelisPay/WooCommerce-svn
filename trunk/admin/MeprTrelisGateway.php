@@ -547,7 +547,7 @@ class MeprTrelisGateway extends \MeprBaseRealGateway
 				MeprSubscription::update($sub);
 			} else if ($request->event == 'charge.success') {
 
-				$txn->status = MeprTransaction::$confirmed_str;
+				$txn->status = MeprTransaction::$complete_str;
 
 				$sub->status = MeprSubscription::$active_str;
 
@@ -558,9 +558,9 @@ class MeprTrelisGateway extends \MeprBaseRealGateway
 				MeprSubscription::update($sub);
 			} else if ($request->event == 'charge.failed') {
 
-				$txn->status = MeprTransaction::$pending_str;
+				$txn->status = MeprTransaction::$failed_str;
 
-				$sub->status = MeprSubscription::$pending_str;
+				$sub->status = MeprSubscription::$cancelled_str;
 
 
 
@@ -573,9 +573,9 @@ class MeprTrelisGateway extends \MeprBaseRealGateway
 
 
 
-				$txn->status = MeprTransaction::$confirmed_str;
+				$txn->status = MeprTransaction::$complete_str;
 
-				$sub->status = MeprSubscription::$pending_str;
+				$sub->status = MeprSubscription::$active_str;
 
 
 
@@ -588,9 +588,9 @@ class MeprTrelisGateway extends \MeprBaseRealGateway
 
 
 
-				$txn->status = MeprTransaction::$pending_str;
+				$txn->status = MeprTransaction::$failed_str;
 
-				$sub->status = MeprSubscription::$pending_str;
+				$sub->status = MeprSubscription::$cancelled_str;
 
 
 
@@ -605,7 +605,7 @@ class MeprTrelisGateway extends \MeprBaseRealGateway
 
 				$txn->status = MeprTransaction::$failed_str;
 
-				$sub->status = MeprSubscription::$pending_str;
+				$sub->status = MeprSubscription::$cancelled_str;
 
 
 
@@ -616,7 +616,7 @@ class MeprTrelisGateway extends \MeprBaseRealGateway
 
 				$this->update_mepr_subscription_meta($txn->subscription_id, '__trelis_customer_wallet_id', $customerWalletId);
 
-				$txn->status = MeprTransaction::$confirmed_str;
+				$txn->status = MeprTransaction::$complete_str;
 
 				$sub->status = MeprSubscription::$active_str;
 
