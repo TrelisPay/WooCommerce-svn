@@ -844,7 +844,7 @@ class MeprTrelisGateway extends \MeprBaseRealGateway
 
 			// Update the subscription status to cancelled and trigger the limit reached actions
 			$sub->status = MeprSubscription::$cancelled_str;
-			$sub->update();
+			MeprSubscription::update($sub);
 			$sub->limit_reached_actions();
 
 			// Send cancelled subscription notices to the user and admin
