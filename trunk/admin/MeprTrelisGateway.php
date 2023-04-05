@@ -989,13 +989,14 @@ class MeprTrelisGateway extends \MeprBaseRealGateway
 
 
 
-	public function display_update_account_form($subscription_id, $errors = array(), $message = "")
-
-	{
-
-		// var_dump("display_update_account_form"); die;
-
+	/** Displays the update account form on the subscription account page **/
+	public function display_update_account_form($sub_id, $errors=array(), $message='') {
+		?>
+		<h3><?php _e('Updating your Trelis wallet Information', 'memberpress'); ?></h3>
+		<div><?php printf(__('To update your Trelis wallet information, cancel your subscription and re-subscribe.', 'memberpress'), '<a href="http://paypal.com" target="blank">', '</a>'); ?></div>
+		<?php
 	}
+
 
 
 
