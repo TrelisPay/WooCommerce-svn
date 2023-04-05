@@ -161,10 +161,10 @@ class WC_Trelis_Gateway extends WC_Payment_Gateway
 			),
 			'gasless' => array(
 				'title' => __('Gasless Payments', 'trelis-crypto-payments'),
-				'label' => __('Cover gas costs for customer payments', 'trelis-crypto-payments'),
+				'label' => __('Offer gasless payments to customers (Trelis pays gas costs)', 'trelis-crypto-payments'),
 				'type' => 'checkbox',
-				'description' => '<a href="https://docs.trelis.com/features/gasless-payments">' . esc_html__('Buy gas credits OR learn more about gasless payments', 'trelis-crypto-payments') . '</a>',
-				'default' => ''
+				'description' => '<a href="https://docs.trelis.com/features/gasless-payments">' . esc_html__('Learn more about gasless payments', 'trelis-crypto-payments') . '</a>',
+				'default' => 'yes'
 			),
 			'api_url' => array(
 				'title' => 'API Webhook URL',
