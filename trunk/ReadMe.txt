@@ -19,21 +19,21 @@ Accept USDC directly to your wallet. Allow customers to pay by connecting any ma
 
 = What are the benefits for me (the store owner)? =
 
-* **Accept recurring payments** Customers can subscribe for automatic monthly or annual payments
-* **Accept payments within mins.** Install the plugin and add api keys from Trelis.com
+* **Accept recurring payments** Customers can subscribe for automatic monthly or annual payments.
+* **Accept payments within mins.** Install the plugin and add api keys from Trelis.com .
 * **Get started for free.** No blockchain or transaction fees on first $1000 per month.
 
 = What are the benefits for my customers? =
 
 * **Pay with any major Polygon wallet.** Metamask, Coinbase, Rainbow, Ledger, Trezor
 * **Gasless payments.** Customers pay in USDC, no gas required!
-* **1% Discount** Customers get a 1% discount with Trelis Prime.
+* **1% Discount** Offer customers a 1% discount with Trelis Prime.
 
 == Getting Started == 
 
 1. Install the Trelis Crypto Payments plugin
 1. Navigate to WooCommerce -> Settings -> Payments -> TrelisPay -> Manage
-1. Navigate to [Trelis.com](Trelis.com) and connect your Ethereum wallet. This wallet will receive payments. It is highly recommended to use a cold wallet. You are solely responsible for custody of your funds. To offer gasless USDC payments, purchase gas credits from your dashboard.
+1. Navigate to [Trelis.com](Trelis.com) and connect your wallet. This wallet will receive payments. It is highly recommended to use a cold wallet. You are solely responsible for custody of your funds. To offer gasless USDC payments, purchase gas credits from your dashboard.
 1. Navigate to the api screen to create a new api key.
 1. Copy the api webhook url from Wordpress and enter it on Trelis.com
 1. Copy the apiKey, apiSecret and webhook secret from Trelis.com and enter them into Wordpress.
