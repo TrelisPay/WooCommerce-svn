@@ -189,10 +189,11 @@ class WC_Trelis_Rest_Api extends WC_Payment_Gateway
 
 				// Get an array of WC_Subscription objects
 				$subscriptions = wcs_get_subscriptions_for_order($order_id);
-				foreach ($subscriptions as $subscription_id => $subscription) {
-					// Change the status of the WC_Subscription object
-					$subscription->update_status('cancelled');
-				}
+				// // Not needed as handled by gateway
+				// foreach ($subscriptions as $subscription_id => $subscription) {
+				// 	// Change the status of the WC_Subscription object
+				// 	$subscription->update_status('cancelled');
+				// }
 
 				$order->add_order_note(__('Subscription cancelled successfully !', 'trelis-crypto-payments'), true);
 			}
