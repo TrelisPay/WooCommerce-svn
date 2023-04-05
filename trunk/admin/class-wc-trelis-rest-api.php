@@ -178,9 +178,6 @@ class WC_Trelis_Rest_Api extends WC_Payment_Gateway
 				$order->payment_complete();
 				$order->reduce_order_stock();
 
-				// call the run subscription API once subscription completes
-				$this->run_subscription_api($order, $subscriptionId, array($subscriptionId));
-
 				if (isset(WC()->cart)) {
 					WC()->cart->empty_cart();
 				}
