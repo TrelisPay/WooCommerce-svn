@@ -626,31 +626,41 @@ class MeprTrelisGateway extends \MeprBaseRealGateway
 			} else if ($request->event == 'subscription.cancellation.failed') {
 
 				$this->update_mepr_subscription_meta($txn->subscription_id, '__trelis_customer_wallet_id', $customerWalletId);
-			}
-		} else if ($request->event == 'subscription.cancellation.success') {
-			// If the subscription cancellation event is successful, retrieve the corresponding subscription using the given Trelis customer wallet ID
+			} else if ($request->event == 'subscription.cancellation.success') {
 
-			// Retrieve the subscription object associated with the Trelis customer wallet ID
-			$subscription_meta = $this->get_mepr_subscription_by_wallet_id($customerWalletId);
-		
-			if ($subscription_meta) {
-				// Retrieve the transaction associated with the subscription
-				$transaction = $this->get_mepr_transaction_by_subscription_id($subscription_meta[0]->id);
-		
-				// Create new MeprSubscription and MeprTransaction objects from the retrieved IDs
-				$sub = new MeprSubscription($subscription_meta[0]->id);
-				$txn = new MeprTransaction($transaction[0]->id);
-		
-				// Update the subscription meta data with the given Trelis customer wallet ID
 				$this->update_mepr_subscription_meta($txn->subscription_id, '__trelis_customer_wallet_id', $customerWalletId);
-		
-				// Update the transaction and subscription statuses accordingly
-				$txn->status = MeprTransaction::$pending_str;
+
+				$txn->status = MeprTransaction::$complete_str;
+
 				$sub->status = MeprSubscription::$cancelled_str;
-		
+
 				MeprTransaction::update($txn);
-				MeprSubscription::update($sub);
-			}
+
+				MeprSubscription::update($sub);			}
+		// } else if ($request->event == 'subscription.cancellation.success') {
+		// 	// If the subscription cancellation event is successful, retrieve the corresponding subscription using the given Trelis customer wallet ID
+
+		// 	// Retrieve the subscription object associated with the Trelis customer wallet ID
+		// 	$subscription_meta = $this->get_mepr_subscription_by_wallet_id($customerWalletId);
+		
+		// 	if ($subscription_meta) {
+		// 		// Retrieve the transaction associated with the subscription
+		// 		$transaction = $this->get_mepr_transaction_by_subscription_id($subscription_meta[0]->id);
+		
+		// 		// Create new MeprSubscription and MeprTransaction objects from the retrieved IDs
+		// 		$sub = new MeprSubscription($subscription_meta[0]->id);
+		// 		$txn = new MeprTransaction($transaction[0]->id);
+		
+		// 		// Update the subscription meta data with the given Trelis customer wallet ID
+		// 		$this->update_mepr_subscription_meta($txn->subscription_id, '__trelis_customer_wallet_id', $customerWalletId);
+		
+		// 		// Update the transaction and subscription statuses accordingly
+		// 		$txn->status = MeprTransaction::$pending_str;
+		// 		$sub->status = MeprSubscription::$cancelled_str;
+		
+		// 		MeprTransaction::update($txn);
+		// 		MeprSubscription::update($sub);
+		// 	}
 		} else {
 
 			throw new MeprGatewayException(__('Transaction id is not available in transaction_meta.', 'memberpress'));
