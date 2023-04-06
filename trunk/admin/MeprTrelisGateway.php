@@ -592,8 +592,6 @@ class MeprTrelisGateway extends \MeprBaseRealGateway
 
 				$sub->status = MeprSubscription::$cancelled_str;
 
-
-
 				MeprTransaction::update($txn);
 
 				MeprSubscription::update($sub);
@@ -601,13 +599,10 @@ class MeprTrelisGateway extends \MeprBaseRealGateway
 
 				$this->update_mepr_subscription_meta($txn->subscription_id, '__trelis_customer_wallet_id', $customerWalletId);
 
-
-
 				$txn->status = MeprTransaction::$failed_str;
 
-				$sub->status = MeprSubscription::$cancelled_str;
-
-
+				// // Omitting this because the gateway will re-try
+				// $sub->status = MeprSubscription::$cancelled_str;
 
 				MeprTransaction::update($txn);
 
