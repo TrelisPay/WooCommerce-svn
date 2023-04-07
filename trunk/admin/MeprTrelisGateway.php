@@ -522,7 +522,7 @@ class MeprTrelisGateway extends \MeprBaseRealGateway
 		}
 
 		if ($request->txHash) {
-			$txHash = $request->txHash
+			$txHash = $request->txHash;
 		}
 
 
