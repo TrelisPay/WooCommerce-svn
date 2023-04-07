@@ -601,7 +601,7 @@ class MeprTrelisGateway extends \MeprBaseRealGateway
 				MeprSubscription::update($sub);
 			} else if ($request->event == 'subscription.charge.failed') {
 
-				$this->update_mepr_subscription_meta($txn->subscription_id, '__trelis_customer_wallet_id', $customerWalletId);
+				// $this->update_mepr_subscription_meta($txn->subscription_id, '__trelis_customer_wallet_id', $customerWalletId);
 
 				$txn->status = MeprTransaction::$failed_str;
 
@@ -613,23 +613,23 @@ class MeprTrelisGateway extends \MeprBaseRealGateway
 				MeprSubscription::update($sub);
 			} else if ($request->event == 'subscription.charge.success') {
 
-				$this->update_mepr_subscription_meta($txn->subscription_id, '__trelis_customer_wallet_id', $customerWalletId);
+				// $this->update_mepr_subscription_meta($txn->subscription_id, '__trelis_customer_wallet_id', $customerWalletId);
 
 				$txn->status = MeprTransaction::$complete_str;
 
 				$sub->status = MeprSubscription::$active_str;
 
-				$txn->trans_num = txHash;
+				$txn->trans_num = $txHash;
 
 				MeprTransaction::update($txn);
 
 				MeprSubscription::update($sub);
 			} else if ($request->event == 'subscription.cancellation.failed') {
 
-				$this->update_mepr_subscription_meta($txn->subscription_id, '__trelis_customer_wallet_id', $customerWalletId);
+				// $this->update_mepr_subscription_meta($txn->subscription_id, '__trelis_customer_wallet_id', $customerWalletId);
 			} else if ($request->event == 'subscription.cancellation.success') {
 
-				$this->update_mepr_subscription_meta($txn->subscription_id, '__trelis_customer_wallet_id', $customerWalletId);
+				// $this->update_mepr_subscription_meta($txn->subscription_id, '__trelis_customer_wallet_id', $customerWalletId);
 
 				$txn->status = MeprTransaction::$complete_str;
 
