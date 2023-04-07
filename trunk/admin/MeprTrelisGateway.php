@@ -521,6 +521,10 @@ class MeprTrelisGateway extends \MeprBaseRealGateway
 			$customerWalletId = $request->customer;
 		}
 
+		if ($request->txHash) {
+			$txHash = $request->txHash
+		}
+
 
 		if ($transaction_meta = $this->get_mepr_transaction_id($merchantKey)) {
 
@@ -614,6 +618,8 @@ class MeprTrelisGateway extends \MeprBaseRealGateway
 				$txn->status = MeprTransaction::$complete_str;
 
 				$sub->status = MeprSubscription::$active_str;
+
+				$txn->trans_num = txHash;
 
 				MeprTransaction::update($txn);
 
