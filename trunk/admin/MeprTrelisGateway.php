@@ -511,7 +511,7 @@ class MeprTrelisGateway extends \MeprBaseRealGateway
 			$merchantKey = $request->subscriptionLink;
 		}
 
-
+		
 
 		if ($request->from) {
 
@@ -523,6 +523,10 @@ class MeprTrelisGateway extends \MeprBaseRealGateway
 
 		if ($request->txHash) {
 			$txHash = $request->txHash;
+		}
+
+		if ($request->txHash) {
+			$subscriptionId = $request->subscriptionId;
 		}
 
 
@@ -581,7 +585,7 @@ class MeprTrelisGateway extends \MeprBaseRealGateway
 
 				$sub->status = MeprSubscription::$active_str;
 
-
+				$sub->subscr_id = $subscriptionId
 
 				MeprTransaction::update($txn);
 
