@@ -525,7 +525,7 @@ class MeprTrelisGateway extends \MeprBaseRealGateway
 			$txHash = $request->txHash;
 		}
 
-		if ($request->txHash) {
+		if ($request->subscriptionId) {
 			$subscriptionId = $request->subscriptionId;
 		}
 
@@ -585,7 +585,7 @@ class MeprTrelisGateway extends \MeprBaseRealGateway
 
 				$sub->status = MeprSubscription::$active_str;
 
-				$sub->subscr_id = $subscriptionId
+				$sub->subscr_id = $subscriptionId;
 
 				MeprTransaction::update($txn);
 
