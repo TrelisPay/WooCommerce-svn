@@ -21,13 +21,11 @@ Accept USDC directly to your wallet. Allow customers to pay by connecting any ma
 
 * **Accept recurring payments** Customers can subscribe for automatic monthly or annual payments.
 * **Accept payments within mins.** Install the plugin and add api keys from Trelis.com .
-* **Get started for free.** No blockchain or transaction fees on first $1000 per month.
 
 = What are the benefits for my customers? =
 
 * **Pay with any major Polygon wallet.** Metamask, Coinbase, Rainbow, Ledger, Trezor
 * **Gasless payments.** Customers pay in USDC, no gas required!
-* **1% Discount** Offer customers a 1% discount with Trelis Prime.
 
 == Getting Started == 
 
@@ -44,14 +42,13 @@ Accept USDC directly to your wallet. Allow customers to pay by connecting any ma
 
 = How much are transaction fees? =
 
-There are no blockchain or transaction fees for the first $1,000 in volume per month. For further details on pricing see [docs.Trelis.com](https://docs.Trelis.com)
+For further details on pricing see [docs.Trelis.com](https://docs.Trelis.com)
 
 = What currencies are supported? =
 
 * Trelis supports WooCommerce and MemberPress stores with the following currencies: USD, EUR, BRL, GBP, CNY, JPY, INR, CAD, RUB, KRW, AUD, MXN, IDR, SAR, CHF, TWD, PLN, TRY, SEK, ARS, NOK, THB, ILS, NGN, AED, MYR, EGP, ZAR, SGD, PHP, VND, DKK, BDT, HKD, COP, PKR, CLP, IQD, CZK, RON, NZD .
-* Customers will be charged in USDC.
-* Alternately, this plugin allows merchants to directly price products in USDC or ETH.
 * This plugin **will not work** for products priced in other currencies.
+* Customers will be charged in USDC.
 
 = What is the maximum payment amount? =
 
@@ -72,7 +69,7 @@ There are no blockchain or transaction fees for the first $1,000 in volume per m
 == Changelog ==
 
 = 1.0.21 =
-* Add support for Woo Subscriptions and Memberpress
+* Add support for Woo Subscriptions (beta) and Memberpress (beta)
 
 = 1.0.20 =
 * Fix logo on checkout
