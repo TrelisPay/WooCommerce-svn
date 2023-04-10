@@ -161,10 +161,10 @@ class WC_Trelis_Gateway extends WC_Payment_Gateway
 			),
 			'gasless' => array(
 				'title' => __('Gasless Payments', 'trelis-crypto-payments'),
-				'label' => __('Cover gas costs for customer payments', 'trelis-crypto-payments'),
+				'label' => __('Offer gasless payments to customers (Trelis pays gas costs)', 'trelis-crypto-payments'),
 				'type' => 'checkbox',
-				'description' => '<a href="https://docs.trelis.com/features/gasless-payments">' . esc_html__('Buy gas credits OR learn more about gasless payments', 'trelis-crypto-payments') . '</a>',
-				'default' => ''
+				'description' => '<a href="https://docs.trelis.com/features/gasless-payments">' . esc_html__('Learn more about gasless payments', 'trelis-crypto-payments') . '</a>',
+				'default' => 'yes'
 			),
 			'api_url' => array(
 				'title' => 'API Webhook URL',
@@ -494,12 +494,12 @@ class WC_Trelis_Gateway extends WC_Payment_Gateway
 
 				$apiUrl = TRELIS_API_URL . 'run-subscription?apiKey=' . $this->apiKey . '&apiSecret=' . $this->apiSecret;
 
-				//Debug start
-				$response = wp_remote_post($apiUrl, $args);
-				$headers = array('Content-Type: text/html; charset=UTF-8');
-				wp_mail('jalpesh@yopmail.com', 'Trelis run subscription API', print_r($response, true), $headers);
-				$this->custom_logs('run subscription api inside schedular', $response);
-				//Debug End
+				// //Debug start
+				// $response = wp_remote_post($apiUrl, $args);
+				// $headers = array('Content-Type: text/html; charset=UTF-8');
+				// wp_mail('jalpesh@yopmail.com', 'Trelis run subscription API', print_r($response, true), $headers);
+				// $this->custom_logs('run subscription api inside schedular', $response);
+				// //Debug End
 
 				if (!is_wp_error($response)) {
 					$body = json_decode($response['body'], true);
@@ -555,12 +555,12 @@ class WC_Trelis_Gateway extends WC_Payment_Gateway
 						$apiUrl = TRELIS_API_URL . 'cancel-subscription?apiKey=' . $this->apiKey . '&apiSecret=' . $this->apiSecret;
 						$response = wp_remote_post($apiUrl, $args);
 
-						//Debug Start
-						$headers = array('Content-Type: text/html; charset=UTF-8');
-						$emailBody = array($args, $response);
-						wp_mail('jalpesh@yopmail.com', 'Trelis cancel subscription API response', print_r($emailBody, true), $headers);
-						$this->custom_logs('run subscription api response', $emailBody);
-						//Debug End
+						// //Debug Start
+						// $headers = array('Content-Type: text/html; charset=UTF-8');
+						// $emailBody = array($args, $response);
+						// wp_mail('jalpesh@yopmail.com', 'Trelis cancel subscription API response', print_r($emailBody, true), $headers);
+						// $this->custom_logs('run subscription api response', $emailBody);
+						// //Debug End
 
 						if (!is_wp_error($response)) {
 							$body = json_decode($response['body'], true);

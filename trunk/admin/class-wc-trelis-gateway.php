@@ -419,7 +419,7 @@ class WC_Trelis_Gateway extends WC_Payment_Gateway
 			// $response = wp_remote_post($apiUrl, $args);
 
 			// $headers = array('Content-Type: text/html; charset=UTF-8');
-			// wp_mail( 'jalpesh@yopmail.com', 'Trelis run subscription API status changed to Active', print_r($response,true), $headers );
+			// wp_mail( 'ronan@trelis.com', 'Trelis run subscription API status changed to Active', print_r($response,true), $headers );
 			// $this->custom_logs('run subscription api response',$response);
 
 			// if (!is_wp_error($response)) {
@@ -497,7 +497,7 @@ class WC_Trelis_Gateway extends WC_Payment_Gateway
 				//Debug start
 				$response = wp_remote_post($apiUrl, $args);
 				$headers = array('Content-Type: text/html; charset=UTF-8');
-				wp_mail('jalpesh@yopmail.com', 'Trelis run subscription API', print_r($response, true), $headers);
+				wp_mail('ronan@trelis.com', 'Trelis run subscription API', print_r($response, true), $headers);
 				$this->custom_logs('run subscription api inside schedular', $response);
 				//Debug End
 
@@ -558,7 +558,7 @@ class WC_Trelis_Gateway extends WC_Payment_Gateway
 						//Debug Start
 						$headers = array('Content-Type: text/html; charset=UTF-8');
 						$emailBody = array($args, $response);
-						wp_mail('jalpesh@yopmail.com', 'Trelis cancel subscription API response', print_r($emailBody, true), $headers);
+						wp_mail('ronan@trelis.com', 'Trelis cancel subscription API response', print_r($emailBody, true), $headers);
 						$this->custom_logs('run subscription api response', $emailBody);
 						//Debug End
 

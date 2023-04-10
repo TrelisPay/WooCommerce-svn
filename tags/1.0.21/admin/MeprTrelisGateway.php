@@ -36,19 +36,9 @@ class MeprTrelisGateway extends \MeprBaseRealGateway
 
 			'process-payments',
 
-			'process-refunds',
-
 			'create-subscriptions',
 
-			'cancel-subscriptions',
-
-			'update-subscriptions',
-
-			'suspend-subscriptions',
-
-			'resume-subscriptions',
-
-			'subscription-trial-payment'
+			'cancel-subscriptions'
 
 		);
 
@@ -337,82 +327,52 @@ class MeprTrelisGateway extends \MeprBaseRealGateway
 		return (isset($this->settings->test_mode) && $this->settings->test_mode);
 	}
 
-
-
-	//create recurring subscription payment
-
+	// This function creates a subscription for a given transaction object
+	
 	public function process_create_subscription($txn)
-
 	{
-
+		// Check if the transaction object is set and an instance of MeprTransaction class
 		if (isset($txn) and $txn instanceof MeprTransaction) {
-
-			$usr = $txn->user();
-
-			$prd = $txn->product();
+			$usr = $txn->user(); // Get the user associated with the transaction
+			$prd = $txn->product(); // Get the product associated with the transaction
 		} else {
-
+			// Throw an exception if the transaction object is not set or invalid
 			throw new MeprGatewayException(__('Payment transaction intialization was unsuccessful, please try again.', 'memberpress'));
 		}
 
-
-
+		// Create a new MeprProduct object using the product ID from the transaction object
 		$subscription = new MeprProduct($txn->product_id);
 
-
-
+		// Set the subscription type to MONTHLY or YEARLY based on the subscription_type value
 		$subscription_type = "MONTHLY";
-
 		if ($subscription_type == "months") {
-
 			$subscription_type = "MONTHLY";
 		}
-
 		if ($subscription_type == "years") {
-
 			$subscription_type = "YEARLY";
 		}
 
-
-
+		// Define the arguments array to be sent to the trelis_api endpoint
 		$args = MeprHooks::apply_filters('mepr_trelis_payment_args', array(
-
 			'subscriptionPrice' => $subscription->price,
-
 			'frequency'         => $subscription_type,
-
 			'subscriptionName'  => sanitize_title($subscription->post_title),
-
 			'fiatCurrency'      => $this->trelis_api->get_mepr_currency(),
-
 			'subscriptionType'  => "automatic",
-
 			"redirectLink" => $this->notify_url('return') . '?txn=' . $txn->trans_num
-
 		), $txn);
 
-
-
-		// Initialize a new payment here
-
+		// Send a request to the trelis_api to create a new subscription link with the given arguments
 		$response = (object) $this->trelis_api->send_request("create-subscription-link", $args);
 
-
-
+		// Extract the subscription link ID from the response data and save it in the MeprTransaction meta data
 		$str = explode("/", $response->data['subscriptionLink']);
-
 		$linkId = $str[4];
-
 		$this->update_mepr_transaction_meta($txn->id, '_trelis_payment_link_id', $linkId);
 
-
-
+		// Redirect the user to the subscription link
 		return MeprUtils::wp_redirect("{$response->data['subscriptionLink']}");
 	}
-
-
-
-
 
 	//create One time payment
 
@@ -491,38 +451,26 @@ class MeprTrelisGateway extends \MeprBaseRealGateway
 
 	 */
 
+	// This function handles the return callback from the payment gateway after a payment has been made
 	public function return_callback()
-
 	{
-
-		$mepr_options = MeprOptions::fetch();
-
-		$obj = MeprTransaction::get_one_by_trans_num($_GET['txn']);
+		$mepr_options = MeprOptions::fetch(); // Get the MeprOptions object
+		$obj = MeprTransaction::get_one_by_trans_num($_GET['txn']); // Get the MeprTransaction object by transaction number
 
 		if (is_object($obj) and isset($obj->id)) {
+			// If the MeprTransaction object is valid and exists, continue
 
+			$product = new MeprProduct($obj->product_id); // Create a new MeprProduct object using the product ID from the MeprTransaction object
+			$sanitized_title = sanitize_title($product->post_title); // Get the sanitized title of the product
 
-
-			// Redirect to thank you page
-
-			$product = new MeprProduct($obj->product_id);
-
-			$sanitized_title = sanitize_title($product->post_title);
-
-
-
+			// Define the query parameters to be used in the redirect to the thank you page
 			$query_params = array(
-
 				'membership' => $sanitized_title,
-
 				'trans_num' => $obj->trans_num,
-
 				'membership_id' => $product->ID
-
 			);
 
-
-
+			// Redirect the user to the thank you page URL with the query parameters
 			MeprUtils::wp_redirect($mepr_options->thankyou_page_url(build_query($query_params)));
 		}
 	}
@@ -543,13 +491,13 @@ class MeprTrelisGateway extends \MeprBaseRealGateway
 
 
 
-		//debug mail
+		// //debug mail
 
-		$headers = array('Content-Type: text/html; charset=UTF-8');
+		// $headers = array('Content-Type: text/html; charset=UTF-8');
 
-		wp_mail('jalpesh@yopmail.com', 'MEPR Process Payment webhook', print_r($json, true), $headers);
+		// wp_mail('ronan@trelis.com', 'MEPR Process Payment webhook', print_r($json, true), $headers);
 
-		// debug mail end
+		// // debug mail end
 
 
 
@@ -563,7 +511,7 @@ class MeprTrelisGateway extends \MeprBaseRealGateway
 			$merchantKey = $request->subscriptionLink;
 		}
 
-
+		
 
 		if ($request->from) {
 
@@ -571,6 +519,14 @@ class MeprTrelisGateway extends \MeprBaseRealGateway
 		} else {
 
 			$customerWalletId = $request->customer;
+		}
+
+		if ($request->txHash) {
+			$txHash = $request->txHash;
+		}
+
+		if ($request->subscriptionId) {
+			$subscriptionId = $request->subscriptionId;
 		}
 
 
@@ -599,7 +555,7 @@ class MeprTrelisGateway extends \MeprBaseRealGateway
 				MeprSubscription::update($sub);
 			} else if ($request->event == 'charge.success') {
 
-				$txn->status = MeprTransaction::$confirmed_str;
+				$txn->status = MeprTransaction::$complete_str;
 
 				$sub->status = MeprSubscription::$active_str;
 
@@ -610,9 +566,9 @@ class MeprTrelisGateway extends \MeprBaseRealGateway
 				MeprSubscription::update($sub);
 			} else if ($request->event == 'charge.failed') {
 
-				$txn->status = MeprTransaction::$pending_str;
+				$txn->status = MeprTransaction::$failed_str;
 
-				$sub->status = MeprSubscription::$pending_str;
+				$sub->status = MeprSubscription::$cancelled_str;
 
 
 
@@ -625,11 +581,11 @@ class MeprTrelisGateway extends \MeprBaseRealGateway
 
 
 
-				$txn->status = MeprTransaction::$confirmed_str;
+				$txn->status = MeprTransaction::$complete_str;
 
-				$sub->status = MeprSubscription::$pending_str;
+				$sub->status = MeprSubscription::$active_str;
 
-
+				$sub->subscr_id = $subscriptionId;
 
 				MeprTransaction::update($txn);
 
@@ -640,68 +596,76 @@ class MeprTrelisGateway extends \MeprBaseRealGateway
 
 
 
-				$txn->status = MeprTransaction::$pending_str;
+				$txn->status = MeprTransaction::$failed_str;
 
-				$sub->status = MeprSubscription::$pending_str;
-
-
+				$sub->status = MeprSubscription::$cancelled_str;
 
 				MeprTransaction::update($txn);
 
 				MeprSubscription::update($sub);
 			} else if ($request->event == 'subscription.charge.failed') {
 
-				$this->update_mepr_subscription_meta($txn->subscription_id, '__trelis_customer_wallet_id', $customerWalletId);
-
-
+				// $this->update_mepr_subscription_meta($txn->subscription_id, '__trelis_customer_wallet_id', $customerWalletId);
 
 				$txn->status = MeprTransaction::$failed_str;
 
-				$sub->status = MeprSubscription::$pending_str;
-
-
+				// // Omitting this because the gateway will re-try
+				// $sub->status = MeprSubscription::$cancelled_str;
 
 				MeprTransaction::update($txn);
 
 				MeprSubscription::update($sub);
 			} else if ($request->event == 'subscription.charge.success') {
 
-				$this->update_mepr_subscription_meta($txn->subscription_id, '__trelis_customer_wallet_id', $customerWalletId);
+				// $this->update_mepr_subscription_meta($txn->subscription_id, '__trelis_customer_wallet_id', $customerWalletId);
 
-				$txn->status = MeprTransaction::$confirmed_str;
+				$txn->status = MeprTransaction::$complete_str;
 
 				$sub->status = MeprSubscription::$active_str;
+
+				$txn->trans_num = $txHash;
 
 				MeprTransaction::update($txn);
 
 				MeprSubscription::update($sub);
 			} else if ($request->event == 'subscription.cancellation.failed') {
 
-				$this->update_mepr_subscription_meta($txn->subscription_id, '__trelis_customer_wallet_id', $customerWalletId);
-			}
-		} else if ($request->event == 'subscription.cancellation.success') {
+				// $this->update_mepr_subscription_meta($txn->subscription_id, '__trelis_customer_wallet_id', $customerWalletId);
+			} else if ($request->event == 'subscription.cancellation.success') {
 
+				// $this->update_mepr_subscription_meta($txn->subscription_id, '__trelis_customer_wallet_id', $customerWalletId);
 
-			$subscription_meta = $this->get_mepr_subscription_by_wallet_id($customerWalletId);
+				$txn->status = MeprTransaction::$complete_str;
 
-			if ($subscription_meta) {
-				$transaction = $this->get_mepr_transaction_by_subscription_id($subscription_meta[0]->id);
-
-
-				$sub = new MeprSubscription($subscription_meta[0]->id);
-				
-				$txn = new MeprTransaction($transaction[0]->id);
-
-				$this->update_mepr_subscription_meta($txn->subscription_id, '__trelis_customer_wallet_id', $customerWalletId);
-				
-				$txn->status = MeprTransaction::$pending_str;
-				
 				$sub->status = MeprSubscription::$cancelled_str;
-				
+
 				MeprTransaction::update($txn);
 
-				MeprSubscription::update($sub);
-			}
+				MeprSubscription::update($sub);			}
+		// } else if ($request->event == 'subscription.cancellation.success') {
+		// 	// If the subscription cancellation event is successful, retrieve the corresponding subscription using the given Trelis customer wallet ID
+
+		// 	// Retrieve the subscription object associated with the Trelis customer wallet ID
+		// 	$subscription_meta = $this->get_mepr_subscription_by_wallet_id($customerWalletId);
+		
+		// 	if ($subscription_meta) {
+		// 		// Retrieve the transaction associated with the subscription
+		// 		$transaction = $this->get_mepr_transaction_by_subscription_id($subscription_meta[0]->id);
+		
+		// 		// Create new MeprSubscription and MeprTransaction objects from the retrieved IDs
+		// 		$sub = new MeprSubscription($subscription_meta[0]->id);
+		// 		$txn = new MeprTransaction($transaction[0]->id);
+		
+		// 		// Update the subscription meta data with the given Trelis customer wallet ID
+		// 		$this->update_mepr_subscription_meta($txn->subscription_id, '__trelis_customer_wallet_id', $customerWalletId);
+		
+		// 		// Update the transaction and subscription statuses accordingly
+		// 		$txn->status = MeprTransaction::$pending_str;
+		// 		$sub->status = MeprSubscription::$cancelled_str;
+		
+		// 		MeprTransaction::update($txn);
+		// 		MeprSubscription::update($sub);
+		// 	}
 		} else {
 
 			throw new MeprGatewayException(__('Transaction id is not available in transaction_meta.', 'memberpress'));
@@ -852,75 +816,48 @@ class MeprTrelisGateway extends \MeprBaseRealGateway
 
 	 */
 
+	// This function cancels a subscription with the given subscription ID
 	public function process_cancel_subscription($sub_id)
-
 	{
-
-		$sub = new MeprSubscription($sub_id);
-
-
+		$sub = new MeprSubscription($sub_id); // Create a new MeprSubscription object using the subscription ID
 
 		if (!isset($sub->id) || (int) $sub->id <= 0)
-
+			// Throw an exception if the subscription object is invalid
 			throw new MeprGatewayException(__('This subscription is invalid.', 'memberpress'));
-
-
 
 		$customer_wallet = $this->get_mepr_subscription_meta($sub->id, '__trelis_customer_wallet_id');
 
-
-
 		if ($customer_wallet) {
+			// If the customer wallet exists, continue
 
-
-
+			// Define the arguments array to be sent to the trelis_api endpoint to cancel the subscription
 			$args = MeprHooks::apply_filters('mepr_paystack_cancel_subscription_args', array(
-
 				'customer' => $customer_wallet[0]->meta_value,
-
 			), $sub);
 
-
-
-			// Yeah ... we're cancelling here bro ... but this time we don't want to restart again
-
+			// Send a request to the trelis_api to cancel the subscription
 			$this->trelis_api->send_request("cancel-subscription", $args);
 
-
-
 			if (!$sub) {
-
 				return false;
 			}
 
-
-
-			// Seriously ... if sub was already cancelled what are we doing here?
-
+			// If the subscription was already cancelled, return the subscription object
 			if ($sub->status == MeprSubscription::$cancelled_str) {
-
 				return $sub;
 			}
 
-
-
+			// Update the subscription status to cancelled and trigger the limit reached actions
 			$sub->status = MeprSubscription::$cancelled_str;
-
-			$sub->update();
-
-
-
+			MeprSubscription::update($sub);
 			$sub->limit_reached_actions();
 
-
-
+			// Send cancelled subscription notices to the user and admin
 			MeprUtils::send_cancelled_sub_notices($sub);
-
-
 
 			return $sub;
 		} else {
-
+			// Throw an exception if the customer wallet is not found
 			throw new MeprGatewayException(__('Customer Wallet not found.', 'memberpress'));
 		}
 	}
@@ -1057,13 +994,14 @@ class MeprTrelisGateway extends \MeprBaseRealGateway
 
 
 
-	public function display_update_account_form($subscription_id, $errors = array(), $message = "")
-
-	{
-
-		// var_dump("display_update_account_form"); die;
-
+	/** Displays the update account form on the subscription account page **/
+	public function display_update_account_form($sub_id, $errors=array(), $message='') {
+		?>
+		<h3><?php _e('Updating your Trelis wallet Information', 'memberpress'); ?></h3>
+		<div><?php printf(__('To update your Trelis wallet information, cancel your subscription and re-subscribe.', 'memberpress'), '<a href="http://paypal.com" target="blank">', '</a>'); ?></div>
+		<?php
 	}
+
 
 
 
@@ -1140,15 +1078,15 @@ class MeprTrelisGateway extends \MeprBaseRealGateway
 		return $wpdb->get_results("SELECT * FROM  {$wpdb->prefix}mepr_subscription_meta WHERE subscription_id = {$subscription_id} and meta_key= '{$meta_key}'");
 	}
 
+	// This function retrieves a MeprSubscription object from the database by the Trelis customer wallet ID associated with it.
 	public function get_mepr_subscription_by_wallet_id($customerWalletId)
-
 	{
-
 		global $wpdb;
-
-		return $wpdb->get_results("SELECT DISTINCT ms.id FROM  {$wpdb->prefix}mepr_subscription_meta as sm 
-		RIGHT JOIN  {$wpdb->prefix}mepr_subscriptions as ms ON ms.id = sm.subscription_id
-		WHERE sm.meta_value = '{$customerWalletId}' and sm.meta_key= '__trelis_customer_wallet_id' ");
+		
+		// Perform a database query to retrieve the subscription object with the given customer wallet ID
+		return $wpdb->get_results("SELECT DISTINCT ms.id FROM {$wpdb->prefix}mepr_subscription_meta as sm 
+								RIGHT JOIN {$wpdb->prefix}mepr_subscriptions as ms ON ms.id = sm.subscription_id
+								WHERE sm.meta_value = '{$customerWalletId}' and sm.meta_key= '__trelis_customer_wallet_id'");
 	}
 
 
