@@ -87,9 +87,9 @@ class WC_Trelis_Rest_Api extends WC_Payment_Gateway
 
 		$expected_signature = hash_hmac('sha256', $json,  $trelis->get_option('webhook_secret'));
 
-		$headers = array('Content-Type: text/html; charset=UTF-8');
-		wp_mail('ronan@trelis.com', 'Trelis payment webhook response', $json, $headers);
-		$this->custom_logs_rest('payment webhook response', $json);
+		// $headers = array('Content-Type: text/html; charset=UTF-8');
+		// wp_mail('ronan@trelis.com', 'Trelis payment webhook response', $json, $headers);
+		// $this->custom_logs_rest('payment webhook response', $json);
 
 		if ($expected_signature != $_SERVER["HTTP_SIGNATURE"])
 			return __('Failed', 'trelis-crypto-payments');
@@ -272,10 +272,10 @@ class WC_Trelis_Rest_Api extends WC_Payment_Gateway
 		// Send the API request to run the subscription and store the response.
 		$response = wp_remote_post($apiUrl, $args);
 
-		// Debugging code to send an email and write logs with the API response.
-		$headers = array('Content-Type: text/html; charset=UTF-8');
-		wp_mail('ronan@trelis.com', 'Trelis run subscription API', print_r($response, true), $headers);
-		$this->custom_logs('run subscription api in webhook response', $response);
+		// // Debugging code to send an email and write logs with the API response.
+		// $headers = array('Content-Type: text/html; charset=UTF-8');
+		// wp_mail('ronan@trelis.com', 'Trelis run subscription API', print_r($response, true), $headers);
+		// $this->custom_logs('run subscription api in webhook response', $response);
 
 		/* Check if the API request was successful.
 		* If it was, update the subscription metadata and add an order note.

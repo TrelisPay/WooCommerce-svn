@@ -491,13 +491,13 @@ class MeprTrelisGateway extends \MeprBaseRealGateway
 
 
 
-		//debug mail
+		// //debug mail
 
-		$headers = array('Content-Type: text/html; charset=UTF-8');
+		// $headers = array('Content-Type: text/html; charset=UTF-8');
 
-		wp_mail('ronan@trelis.com', 'MEPR Process Payment webhook', print_r($json, true), $headers);
+		// wp_mail('ronan@trelis.com', 'MEPR Process Payment webhook', print_r($json, true), $headers);
 
-		// debug mail end
+		// // debug mail end
 
 
 
