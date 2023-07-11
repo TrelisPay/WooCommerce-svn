@@ -199,9 +199,10 @@ class MeprTrelisGateway extends \MeprBaseRealGateway
 
 		$this->settings->webhook_url = $this->settings->webhook_url;
 
-		$this->settings->is_prime = ($this->settings->is_prime ? $this->settings->is_prime : false);
+		$this->settings->is_prime = (bool) ($this->settings->is_prime ? $this->settings->is_prime : false); // Cast to boolean
+		
+		$this->settings->is_gasless = (bool) ($this->settings->is_gasless ? $this->settings->is_gasless : false); // Cast to boolean
 
-		$this->settings->is_gasless = ($this->settings->is_gasless ? $this->settings->is_gasless : false);
 	}
 
 
@@ -220,9 +221,9 @@ class MeprTrelisGateway extends \MeprBaseRealGateway
 
 		$webhook_secret    = trim($this->settings->webhook_secret);
 
-		$is_prime = $this->settings->is_prime;
+		$is_prime = (bool) $this->settings->is_prime; // Cast to boolean
 
-		$is_gasless = $this->settings->is_gasless;
+		$is_gasless = (bool) $this->settings->is_gasless; // Cast to boolean
 
 ?>
 
@@ -416,9 +417,9 @@ class MeprTrelisGateway extends \MeprBaseRealGateway
 
 			"fiatCurrency" => $this->trelis_api->get_mepr_currency(),
 
-			"isPrime" => $this->settings->is_prime,
-
-			"isGasless" => $this->settings->is_gasless
+			"isPrime" => (bool) $this->settings->is_prime, // Cast to boolean
+			
+    		"isGasless" => (bool) $this->settings->is_gasless // Cast to boolean
 
 		), $txn);
 
