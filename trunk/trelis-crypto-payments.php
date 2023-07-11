@@ -16,7 +16,7 @@
  * Plugin Name:       Trelis Crypto Payments
  * Plugin URI:        https://docs.trelis.com/products/woocommerce-plugin
  * Description:       Accept USDC payments, including recurring payments to your wallet.
- * Version:           2.0.2
+ * Version:           2.0.1
  * Requires at least: 6.1
  * Requires PHP:      7.4
  * Author:            Trelis
@@ -37,7 +37,7 @@ if (!defined('WPINC')) {
  * Start at version 1.0.0 and use SemVer - https://semver.org
  * Rename this for your plugin and update it as you release new versions.
  */
-define('TRELIS_CRYPTO_PAYMENTS_VERSION', '2.0.2');
+define('TRELIS_CRYPTO_PAYMENTS_VERSION', '1.0.0');
 
 
 define('TRELIS_API_URL', 'https://api.trelis.com/dev-api/');
