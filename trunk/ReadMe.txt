@@ -4,7 +4,7 @@ Donate link: https://shop.trelis.com/product/woocommerce-plugin-donation/
 Tags: web3, recurring payments, subscriptions, woocommerce, memberpress, crypto, payment, polygon, USDC, cryptocurrency, non-custodial, payments, payment gateway, metamask
 Requires at least: 6.1
 Tested up to: 6.2.2
-Stable tag: 2.0.1
+Stable tag: 2.0.2
 Requires PHP: 7.4
 License: GPL-3.0
 License URI: http://www.gnu.org/licenses/gpl-3.0.txt
@@ -68,6 +68,9 @@ For further details on pricing see [docs.Trelis.com](https://docs.Trelis.com)
 5. Supported wallets
 
 == Changelog ==
+
+= 2.0.2 = 
+* Fix bug with MemberPress expiring memberships
 
 = 2.0.1 = 
 * Tested up to WordPress 6.2.2

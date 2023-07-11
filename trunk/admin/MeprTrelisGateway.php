@@ -404,22 +404,15 @@ class MeprTrelisGateway extends \MeprBaseRealGateway
 
 		// Initialize the charge on Trelis's servers - this will charge the user's card
 
+		// Initialize the charge on Trelis's servers - this will charge the user's card
 		$args = MeprHooks::apply_filters('mepr_trelis_payment_args', array(
-
 			"productName" => $productName,
-
 			"productPrice"  => $productPrice,
-
 			"token" => $this->trelis_api->get_mepr_token(),
-
 			"redirectLink" => $this->notify_url('return') . '?txn=' . $txn->trans_num,
-
 			"fiatCurrency" => $this->trelis_api->get_mepr_currency(),
-
-			"isPrime" => $this->settings->is_prime,
-
-			"isGasless" => $this->settings->is_gasless
-
+			"isPrime" => ($this->settings->is_prime == 'on'), // Convert to boolean
+			"isGasless" => ($this->settings->is_gasless == 'on') // Convert to boolean
 		), $txn);
 
 
